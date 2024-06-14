@@ -13,6 +13,7 @@ export default function OAuth() {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
       const res = await fetch('/api/auth/google', {
         method: 'POST',
@@ -20,25 +21,32 @@ export default function OAuth() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
         }),
       });
+
+      if (!res.ok) {
+        throw new Error('Failed to authenticate with backend');
+      }
+
       const data = await res.json();
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-      alert('Could not sign in with google', error);
+      console.error('Error during sign-in:', error.message);
+      alert(`Could not sign in with Google: ${error.message}`);
     }
   };
+
   return (
     <button
       onClick={handleGoogleClick}
       type='button'
       className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95'
     >
-      Continue with google
+      Continue with Google
     </button>
   );
 }
