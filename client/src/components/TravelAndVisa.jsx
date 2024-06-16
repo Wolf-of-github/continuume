@@ -1,8 +1,14 @@
-// src/components/TravelAndVisa.jsx
-
 import React from 'react';
 
-const TravelAndVisa = () => {
+const TravelAndVisa = ({ data, onChange }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    onChange({
+      ...data,
+      [name]: value,
+    });
+  };
+
   return (
     <div>
       <h2>Travel & Visa</h2>
@@ -10,11 +16,11 @@ const TravelAndVisa = () => {
         {/* Form fields for travel and visa */}
         <div>
           <label>Passport Number:</label>
-          <input type="text" name="passportNumber" />
+          <input type="text" name="passportNumber" value={data.passportNumber} onChange={handleInputChange} />
         </div>
         <div>
           <label>Visa Type:</label>
-          <input type="text" name="visaType" />
+          <input type="text" name="visaType" value={data.visaType} onChange={handleInputChange} />
         </div>
         {/* Add more fields as needed */}
       </form>
