@@ -16,7 +16,7 @@ const TravelAndVisa = ({ data, onChange }) => {
         {/* Form fields for travel and visa */}
         <div>
           <label>Passport Number:</label>
-          <input type="text" name="passportNumber" value={data.passportNumber} onChange={handleInputChange} />
+          <input type="text" name="passpostNumber" value={data.passpostNumber} onChange={handleInputChange} />
         </div>
         <div>
           <label>Visa Type:</label>

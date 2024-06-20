@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import PersonalDetails from '../components/PersonalDetails';
 import Education from '../components/Education';
@@ -19,13 +19,38 @@ const Form = () => {
       degree: '',
     },
     travelAndVisa: {
-      passportNumber: '',
+      passpostNumber: '',
       visaType: '',
     },
   });
+  
+  const [formExists, setFormExists] = useState(false); 
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchData();
+    }
+  }, [currentUser]);
+
+  const fetchData = async () => {
+    try {
+      const userId = currentUser._id;
+      const res = await fetch(`/api/form/read/${userId}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to fetch form data');
+      }
+
+      setFormData(data); // Populate form fields with retrieved data
+      setFormExists(true); // Set formExists to true if form data exists
+
+    } catch (error) {
+      console.error('Error fetching form data:', error.message);
+    }
+  };
 
   const [selectedForm, setSelectedForm] = useState('PersonalDetails');
-
 
   const handleFormDataChange = (section, data) => {
     setFormData({
@@ -35,29 +60,30 @@ const Form = () => {
   };
 
   const saveFormData = async () => {
-    // try {
+    try {
       
-    //   const userId = currentUser._id;
-    //   const res = await fetch(`/api/form/create/${userId}`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
+      const endpoint = formExists ? `/api/form/update/${currentUser._id}` : `/api/form/create/${currentUser._id}`;
+      const method = formExists ? 'PUT' : 'POST';
+
+      const res = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
   
-    //   const data = await res.json();
-  
-    //   if (!res.ok) {
-    //     throw new Error(data.message || 'Failed to save form data');
-    //   }
+      const data = await res.json();
       
-    //   console.log('Form data saved successfully:', data);
-    // } catch (error) {
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to save form data');
+      }
+      
+      console.log('Form data saved successfully:', data);
+    } catch (error) {
     
-    //   console.error('Error saving form data:', error.message);
-    // }
-    console.log(`/api/form/create/${currentUser._id}`)
+      console.error('Error saving form data:', error.message);
+    }
   };
   
 

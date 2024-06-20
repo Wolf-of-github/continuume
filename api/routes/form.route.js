@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/create/:id', verifyToken, createForm);
 router.delete('/delete/:id', verifyToken, deleteForm);
-router.patch('/update/:id', verifyToken, updateForm);
+router.put('/update/:id', verifyToken, updateForm);
 router.get('/read/:id', verifyToken, readForm);
 
 export default router;
