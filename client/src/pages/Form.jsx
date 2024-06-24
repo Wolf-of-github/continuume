@@ -129,26 +129,39 @@ const Form = () => {
   };
   
   return (
-    <div className="flex">
-      <Sidebar onSelect={setSelectedForm} />
-      <main className="flex-1 p-6 bg-gray-800">
+    <div className="flex h-screen sticky">
+
+      <div className="flex bg-blue-200"> {/* Section 1 */}
+        <Sidebar className = "" onSelect={setSelectedForm} />
+      </div>
+      
+      <div class="flex-1 grid grid-rows-10 ">
         
+        <div class="col-span-2 row-span-9 bg-gray-800 overflow-auto pl-3 py-5">
           {renderFormSection()}
-        
-        <div className="mt-4 flex justify-between">
-          
-          <button className={`px-4 py-2 rounded ${selectedForm != 'PersonalDetails'? 'bg-blue-500 text-white': ' bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>Back</button>
-
-          <button className={`px-4 py-2 rounded ${selectedForm != 'TravelAndVisa'? 'bg-blue-500 text-white': ' bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>Next</button>
-          
-          <button className={`px-4 py-2 rounded ${formDataModified ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified}>
-            Save
-          </button>
-
         </div>
         
-      </main>
+        <div class="col-span-2 bg-gray-800 ">
+            <div className="flex justify-between">
+              <div>
+                <button className={`px-4 py-2 rounded ml-3 ${selectedForm !== 'PersonalDetails' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>
+                  Back
+                </button>
+                
+                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'TravelAndVisa' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
+                  Next
+                </button>
+              </div>
+
+              <button className={`px-4 py-2 rounded mr-6 ${formDataModified ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified}>
+                Save
+              </button>
+            </div>
+        </div>
+      
+      </div>
     </div>
+
   );
 };
 

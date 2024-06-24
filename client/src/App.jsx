@@ -20,13 +20,14 @@ export default function App() {
             <Route path='/sign-in' element={<SignIn />} />
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/about' element={<About />} />
+            {/* PrivateRoute wrapper for protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />
               <Route path='/profile' element={<Profile />} />
             </Route>
           </Routes>
         </div>
-        <Footer />
+        <Footer className="mt-auto" />
       </BrowserRouter>
     </div>
   );

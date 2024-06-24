@@ -5,9 +5,9 @@ import React from 'react';
 const Sidebar = ({ onSelect }) => {
   return (
     
-    <aside className='w-64 '>
-      
-      <div style={{borderRight: "0.5px solid white"}} className ="h-full text-white bg-gray-800">
+   <aside className="w-48 ">
+
+      <div style={{borderRight: "0.5px solid white"}} className ="h-full text-white bg-gray-800 pl-2">
 
       <ul className="py-3">
          
