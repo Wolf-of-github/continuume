@@ -8,6 +8,9 @@ const PersonalDetails = ({ data, onChange }) => {
   const [files, setFiles] = useState([]);
   const [pdf1, setPdf1] = useState(null);
   const [pdf2, setPdf2] = useState(null);
+  const [isPdf1Uploading, setIsPdf1Uploading] = useState(false);
+  const [isPdf2Uploading, setIsPdf2Uploading] = useState(false);
+  const [pdf2InputDisabled, setPdf2InputDisabled] = useState(false); // State to disable/enable PDF 2 input
 
   const handleImageSubmit = async (e) => {
     if (files.length > 0 && files.length < 3) {
@@ -64,7 +67,7 @@ const PersonalDetails = ({ data, onChange }) => {
     });
   };
 
-  const storeFile = async (file) => {
+  const storeFile = async (file, field) => {
     return new Promise((resolve, reject) => {
       const storage = getStorage(app);
       const fileName = new Date().getTime() + file.name;
@@ -90,14 +93,53 @@ const PersonalDetails = ({ data, onChange }) => {
 
   const handlePdfUpload = async (file, field) => {
     try {
+      if (field === 'pdf2Url') {
+        setIsPdf2Uploading(true);
+        setPdf2InputDisabled(true); // Disable PDF 2 input during upload
+      } else {
+        setIsPdf1Uploading(true);
+      }
       const url = await storeFile(file);
-      onChange({ ...data, [field]: url }); // Update pdfUrl field in formData
+      onChange({ ...data, [field]: url });
       setImageUploadError(false);
     } catch (err) {
       setImageUploadError(`${err}`);
+    } finally {
+      if (field === 'pdf2Url') {
+        setIsPdf2Uploading(false);
+        setPdf2InputDisabled(false); // Enable PDF 2 input after upload completes
+      } else {
+        setIsPdf1Uploading(false);
+      }
     }
   };
 
+  const handlePdfDelete = (field) => {
+    if (field === 'pdf1Url') {
+      try {
+        setIsPdf1Uploading(true); // Disable delete button
+        onChange({ ...data, pdf1Url: null });
+      } finally {
+        setIsPdf1Uploading(false); // Enable delete button
+      }
+    } else if (field === 'pdf2Url') {
+      try {
+        setIsPdf2Uploading(true); // Disable delete button
+        onChange({ ...data, pdf2Url: null });
+      } finally {
+        setIsPdf2Uploading(false); // Enable delete button
+      }
+    }
+  };
+
+  const handlePdf2Change = (e) => {
+    const file = e.target.files[0];
+    setPdf2(file);
+    if (file) {
+      handlePdfUpload(file, 'pdf2Url');
+    }
+  };
+  
   return (
     <div>
       <h2>Personal Details</h2>
@@ -135,24 +177,41 @@ const PersonalDetails = ({ data, onChange }) => {
             </div>
           ))}
         </div>
-
+        <br />
+      
         <div className="flex flex-col flex-1 gap-4">
-          <br />
-          <div className="flex gap-4">
-            <input onChange={(e) => setPdf1(e.target.files[0])} className='p-3 border border-gray-300 rounded w-full' type="file" id='pdf1' accept='.pdf' />
-            <button type='button' onClick={() => handlePdfUpload(pdf1, 'pdf1Url')} className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'>Upload PDF 1</button>
-          </div>
-          {data.pdf1Url && <a href={data.pdf1Url} target="_blank" rel="noopener noreferrer">View PDF 1</a>}
+          {
+            data.pdf1Url ? (
+              <div>
+                <button type='button' onClick={() => handlePdfDelete('pdf1Url')} className={`p-3 text-red-700 border border-red-700 rounded uppercase hover:shadow-lg ${isPdf1Uploading ? 'disabled:opacity-80 cursor-not-allowed' : ''}`} disabled={isPdf1Uploading}>
+                  {isPdf1Uploading ? 'Uploading...' : 'Delete PDF 1'}
+                </button>
+                <a href={data.pdf1Url} target="_blank" rel="noopener noreferrer">View PDF 1</a>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <input onChange={(e) => setPdf1(e.target.files[0])} className='p-3 border border-gray-300 rounded w-full' type="file" id='pdf1' accept='.pdf' />
+                <button type='button' onClick={() => handlePdfUpload(pdf1, 'pdf1Url')} className={`p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg ${isPdf1Uploading ? 'disabled:opacity-80 cursor-not-allowed' : ''}`} disabled={isPdf1Uploading}>
+                  {isPdf1Uploading ? 'Uploading...' : 'Upload PDF 1'}
+                </button>
+              </div>
+            )
+          }
+          {
+            data.pdf2Url ? (
+              <div>
+                <button type='button' onClick={() => handlePdfDelete('pdf2Url')} className={`p-3 text-red-700 border border-red-700 rounded uppercase hover:shadow-lg ${isPdf2Uploading ? 'disabled:opacity-80 cursor-not-allowed' : ''}`} disabled={isPdf2Uploading}>
+                  {isPdf2Uploading ? 'Uploading...' : 'Delete PDF 2'}
+                </button>
+                <a href={data.pdf2Url} target="_blank" rel="noopener noreferrer">View PDF 2</a>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <input onChange={handlePdf2Change} disabled={pdf2InputDisabled} className='p-3 border border-gray-300 rounded w-full' type="file" id='pdf2' accept='.pdf' />
+              </div>
+            )
+          }
         </div>
-
-        <div className="flex flex-col flex-1 gap-4">
-          <br />
-          <div className="flex gap-4">
-            <input onChange={(e) => setPdf2(e.target.files[0])} className='p-3 border border-gray-300 rounded w-full' type="file" id='pdf2' accept='.pdf' />
-            <button type='button' onClick={() => handlePdfUpload(pdf2, 'pdf2Url')} className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'>Upload PDF 2</button>
-          </div>
-          {data.pdf2Url && <a href={data.pdf2Url} target="_blank" rel="noopener noreferrer">View PDF 2</a>}
-        </div>        
         
       </form>
     </div>

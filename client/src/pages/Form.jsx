@@ -22,14 +22,15 @@ const Form = () => {
       degree: '',
     },
     travelAndVisa: {
-      passpostNumber: '',
+      passportNumber: '',
       visaType: '',
     },
   });
   
   const [formExists, setFormExists] = useState(false); 
   const [selectedForm, setSelectedForm] = useState('PersonalDetails');
-
+  const [formDataModified, setFormDataModified] = useState(false); // Track if formData has been modified
+  console.log(selectedForm)
   useEffect(() => {
     if (currentUser) {
       fetchData();
@@ -54,18 +55,16 @@ const Form = () => {
     }
   };
 
-  
   const handleFormDataChange = (section, data) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [section]: { ...prevFormData[section], ...data },
     }));
+    setFormDataModified(true);
   };
-  
 
   const saveFormData = async () => {
     try {
-      
       const endpoint = formExists ? `/api/form/update/${currentUser._id}` : `/api/form/create/${currentUser._id}`;
       const method = formExists ? 'PUT' : 'POST';
 
@@ -84,12 +83,11 @@ const Form = () => {
       }
       
       console.log('Form data saved successfully:', data);
+      setFormDataModified(false); // Reset formDataModified after successful save
     } catch (error) {
-    
       console.error('Error saving form data:', error.message);
     }
   };
-  
 
   const goToNextSection = () => {
     switch (selectedForm) {
@@ -129,16 +127,22 @@ const Form = () => {
         return <div>Select a form from the sidebar.</div>;
     }
   };
-
+  
   return (
     <div className="flex">
       <Sidebar onSelect={setSelectedForm} />
       <main className="flex-1 p-6 bg-[#f1f5f9]">
         {renderFormSection()}
         <div className="mt-4 flex justify-between">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={goToPreviousSection}>Back</button>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={goToNextSection}>Next</button>
-          <button className="px-4 py-2 bg-green-500 text-white rounded" onClick={saveFormData}>Save</button>
+          
+          <button className={`px-4 py-2 rounded ${selectedForm != 'PersonalDetails'? 'bg-blue-500 text-white': ' bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>Back</button>
+
+          <button className={`px-4 py-2 rounded ${selectedForm != 'TravelAndVisa'? 'bg-blue-500 text-white': ' bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>Next</button>
+          
+          <button className={`px-4 py-2 rounded ${formDataModified ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified}>
+            Save
+          </button>
+
         </div>
       </main>
     </div>
