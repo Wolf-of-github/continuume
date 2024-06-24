@@ -1,8 +1,8 @@
-// src/pages/Home.jsx
-
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import GoToForm from '../components/GoToForm';
+
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -10,15 +10,8 @@ const Home = () => {
   return (
     <div className="home">
       {currentUser ? (
-        <div>
-          <div>Welcome, {currentUser.name}!</div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/form">Go to Form</Link>
-              </li>
-            </ul>
-          </nav>
+        <div className='bg-slate-100 h-dvh'>
+          <GoToForm /> {/* Display the card component if user is logged in */}
         </div>
       ) : (
         <div>Please log in to see personalized content.</div>
