@@ -84,6 +84,7 @@ const formSchema = new Schema({
   personal_details: {
     name: String,
     email: String,
+    resumeURL: String,
   },
   education: {
     school: String,

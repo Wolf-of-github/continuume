@@ -13,6 +13,7 @@ const Form = () => {
     personal_details: {
       name: '',
       email: '',
+      resumeURL: '',
     },
     education: {
       school: '',
@@ -25,6 +26,7 @@ const Form = () => {
   });
   
   const [formExists, setFormExists] = useState(false); 
+  const [selectedForm, setSelectedForm] = useState('PersonalDetails');
 
   useEffect(() => {
     if (currentUser) {
@@ -50,8 +52,7 @@ const Form = () => {
     }
   };
 
-  const [selectedForm, setSelectedForm] = useState('PersonalDetails');
-
+  
   const handleFormDataChange = (section, data) => {
     setFormData({
       ...formData,
