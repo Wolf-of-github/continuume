@@ -131,8 +131,10 @@ const Form = () => {
   return (
     <div className="flex">
       <Sidebar onSelect={setSelectedForm} />
-      <main className="flex-1 p-6 bg-[#f1f5f9]">
-        {renderFormSection()}
+      <main className="flex-1 p-6 bg-gray-800">
+        
+          {renderFormSection()}
+        
         <div className="mt-4 flex justify-between">
           
           <button className={`px-4 py-2 rounded ${selectedForm != 'PersonalDetails'? 'bg-blue-500 text-white': ' bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>Back</button>
@@ -144,6 +146,7 @@ const Form = () => {
           </button>
 
         </div>
+        
       </main>
     </div>
   );

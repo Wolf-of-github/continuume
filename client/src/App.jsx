@@ -7,21 +7,27 @@ import Profile from './pages/Profile';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import Form from './pages/Form';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/about' element={<About />} />
-        <Route element={<PrivateRoute />}>
-          <Route path='/form' element={<Form />} />
-          <Route path='/profile' element={<Profile />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div className="flex flex-col min-h-screen">
+      <BrowserRouter>
+        <Header />
+        <div className="flex-grow">
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/sign-in' element={<SignIn />} />
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/about' element={<About />} />
+            <Route element={<PrivateRoute />}>
+              <Route path='/form' element={<Form />} />
+              <Route path='/profile' element={<Profile />} />
+            </Route>
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </div>
   );
 }

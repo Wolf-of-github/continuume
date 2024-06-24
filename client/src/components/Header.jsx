@@ -5,42 +5,43 @@ import { useSelector } from 'react-redux';
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   return (
-    <header className='bg-slate-200 shadow-md'>
-      <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
-        <Link to='/'>
-          <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-            <span className='text-slate-500'>Global</span>
-            <span className='text-slate-700'>Borders</span>
-          </h1>
+
+    <nav style={{borderBottom: "0.5px solid white"}} class="bg-gray-50 dark:bg-gray-800">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        
+        <Link to = '/' class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="https://flowbite.com/docs/images/logo.svg " class="h-8" alt="Flowbite Logo" />
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Continuume</span>
         </Link>
-        <form className='bg-slate-100 p-3 rounded-lg flex items-center'>
-          <input
-            type='text'
-            placeholder='Search...'
-            className='bg-transparent focus:outline-none w-24 sm:w-64'
-          />
-          <FaSearch className='text-slate-600' />
-        </form>
-        <ul className='flex gap-4'>
-          <Link to='/'>
-            <li className='hidden sm:inline text-slate-700 hover:underline'>
-              Home
+
+        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+
+          <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+
+            <li>
+              <Link to = '/' class="block py-2 px-3 md:p-0 text-white md:bg-transparent  md:dark:hover:text-blue-500 md:dark:bg-transparent" aria-current="page">Home</Link>
             </li>
-          </Link>
-          <Link to='/about'>
-            <li className='hidden sm:inline text-slate-700 hover:underline'>
-              About
+
+            <li>
+              <Link to = '/about' class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</Link>
             </li>
-          </Link>
-          <Link to='/profile'>
-            {currentUser ? (
-              <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='profile' />
-            ) : (
-              <li className=' text-slate-700 hover:underline'> Sign in</li>
-            )}
-          </Link>
-        </ul>
+
+            <li>
+              <a href="#" class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+            </li>
+
+            <li>
+              <Link to='/profile'>
+                {currentUser ? (
+                  <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='profile' />
+                ) : (
+                  <li className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'> Sign in</li>
+                )}
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </header>
+    </nav>
   );
 }
