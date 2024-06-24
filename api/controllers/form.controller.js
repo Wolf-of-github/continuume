@@ -2,9 +2,11 @@ import Form from '../models/form.model.js';
 import { errorHandler } from '../utils/error.js';
 
 export const createForm = async (req, res, next) => {
+  
   const formData = req.body;
   const formId = req.params.id; // Assuming the id is available in req.params.id
   try {
+    
     formData._id = formId;
     const newForm = new Form(formData);
   
@@ -18,11 +20,11 @@ export const createForm = async (req, res, next) => {
 
 
 export const updateForm = async (req, res, next) => {
-  
   const formId = req.params.id;
   const formData = req.body;
   
   try {
+    
     
     const form = await Form.findById(formId);
     

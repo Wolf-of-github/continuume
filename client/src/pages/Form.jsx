@@ -13,7 +13,9 @@ const Form = () => {
     personal_details: {
       name: '',
       email: '',
-      resumeURL: '',
+      imageUrls: [],
+      pdf1Url: '',
+      pdf2Url: '',
     },
     education: {
       school: '',
@@ -54,11 +56,12 @@ const Form = () => {
 
   
   const handleFormDataChange = (section, data) => {
-    setFormData({
-      ...formData,
-      [section]: data,
-    });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [section]: { ...prevFormData[section], ...data },
+    }));
   };
+  
 
   const saveFormData = async () => {
     try {

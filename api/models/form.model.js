@@ -84,7 +84,9 @@ const formSchema = new Schema({
   personal_details: {
     name: String,
     email: String,
-    resumeURL: String,
+    imageUrls: [String],
+    pdf1Url: String,
+    pdf2Url: String,
   },
   education: {
     school: String,
