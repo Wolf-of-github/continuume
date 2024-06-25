@@ -12,7 +12,7 @@ export default function GoToForm() {
           Go to Form
         </Link> */}
 
-        <Link to = '/form' type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Go</Link>        
+        <Link to = '/form' type="button" className = "text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Go</Link>        
       </div>
 
 

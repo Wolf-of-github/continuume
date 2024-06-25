@@ -29,7 +29,7 @@ export default function App() {
             </Route>
           </Routes>
         </div>
-        <Footer className="" />
+        {/* <Footer className="" /> */}
       </BrowserRouter>
     </div>
   );

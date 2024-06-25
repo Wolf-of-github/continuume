@@ -17,6 +17,9 @@ import {
   signOutUserStart,
 } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import Modal from '../components/Modal';
+import Toast from '../components/Toast'; // Import your Toast component
+
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -26,12 +29,6 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const dispatch = useDispatch();
-
-  // firebase storage
-  // allow read;
-  // allow write: if
-  // request.resource.size < 2 * 1024 * 1024 &&
-  // request.resource.contentType.matches('image/.*')
 
   useEffect(() => {
     if (file) {
@@ -81,13 +78,16 @@ export default function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
+        showToast('error', data.message); // Show error toast
         return;
       }
 
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
+      showToast('success', 'User is updated successfully!'); // Show success toast
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+      showToast('error', error.message); // Show error toast
     }
   };
 
@@ -100,103 +100,174 @@ export default function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
+        showToast('error', data.message); // Show error toast
         return;
       }
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+      showToast('error', error.message); // Show error toast
     }
   };
 
   const handleSignOut = async () => {
-
     try {
       dispatch(signOutUserStart())
       const res = await fetch('/api/auth/signout');
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
+        showToast('error', data.message); // Show error toast
         return;
       }
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFailure(data.message));
+      showToast('error', error.message); // Show error toast
     }
   }
-  return (
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          type='file'
-          ref={fileRef}
-          hidden
-          accept='image/*'
-        />
-        <img
-          onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
-          alt='profile'
-          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
-        />
-        <p className='text-sm self-center'>
-          {fileUploadError ? (
-            <span className='text-red-700'>
-              Error Image upload (image must be less than 2 mb)
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className='text-green-700'>Image successfully uploaded!</span>
-          ) : (
-            ''
-          )}
-        </p>
-        <input
-          type='text'
-          placeholder='username'
-          defaultValue={currentUser.username}
-          id='username'
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type='email'
-          placeholder='email'
-          id='email'
-          defaultValue={currentUser.email}
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type='password'
-          placeholder='password'
-          onChange={handleChange}
-          id='password'
-          className='border p-3 rounded-lg'
-        />
-        <button
-          disabled={loading}
-          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
-        >
-          {loading ? 'Loading...' : 'Update'}
-        </button>
-      </form>
-      <div className='flex justify-between mt-5'>
-        <span
-          onClick={handleDeleteUser}
-          className='text-red-700 cursor-pointer'
-        >
-          Delete account
-        </span>
-        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign out</span>
-      </div>
 
-      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='text-green-700 mt-5'>
-        {updateSuccess ? 'User is updated successfully!' : ''}
-      </p>
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+
+  const confirmSignOut = () => {
+    setShowSignOutModal(false);
+    handleSignOut();
+  };
+
+  const confirmDeleteAccount = () => {
+    setShowDeleteAccountModal(false);
+    handleDeleteUser();
+  };
+
+  // Toast state
+  const [toasts, setToasts] = useState([]);
+
+  // Function to show toast
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  // Function to remove toast
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };
+
+  return (
+    <div className='max-w-lg mx-auto'>
+      <div className='max-w-lg mx-auto p-6 rounded-lg'>
+        <div className='max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg overflow-hidden'>
+          <h1 className='text-3xl font-semibold text-center my-7 text-gray-800'>Profile</h1>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+            <input
+              onChange={(e) => setFile(e.target.files[0])}
+              type='file'
+              ref={fileRef}
+              hidden
+              accept='image/*'
+            />
+            <img
+              onClick={() => fileRef.current.click()}
+              src={formData.avatar || currentUser.avatar}
+              alt='profile'
+              className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2 border-4 border-gray-200'
+            />
+            <p className='text-sm self-center mt-2'>
+              {fileUploadError ? (
+                <span className='text-red-700'>
+                  Error Image upload (image must be less than 2 mb)
+                </span>
+              ) : filePerc > 0 && filePerc < 100 ? (
+                <span className='text-blue-600'>{`Uploading ${filePerc}%`}</span>
+              ) : filePerc === 100 ? (
+                <span className='text-green-700'>Image successfully uploaded!</span>
+              ) : (
+                ''
+              )}
+            </p>
+            <input
+              type='text'
+              placeholder='Username'
+              defaultValue={currentUser.username}
+              id='username'
+              className='border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+              onChange={handleChange}
+            />
+            <input
+              type='email'
+              placeholder='Email'
+              id='email'
+              defaultValue={currentUser.email}
+              className='border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+              onChange={handleChange}
+            />
+            <input
+              type='password'
+              placeholder='Password'
+              onChange={handleChange}
+              id='password'
+              className='border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+            />
+            <button
+              disabled={loading}
+              className='text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br rounded-lg p-3 uppercase'
+            >
+              {loading ? 'Loading...' : 'Update'}
+            </button>
+          </form>
+          <div className='flex justify-between mt-5'>
+            <span
+              onClick={() => setShowDeleteAccountModal(true)}
+              className='text-red-700 cursor-pointer hover:text-red-800'
+            >
+              Delete account
+            </span>
+            <span onClick={() => setShowSignOutModal(true)} className='text-red-700 cursor-pointer hover:text-red-800'>
+              Sign out
+            </span>
+          </div>
+
+          {/* <p className='text-red-700 mt-5'>{error ? error : ''}</p>
+          <p className='text-green-700 mt-5'>
+            {updateSuccess ? 'User is updated successfully!' : ''}
+          </p> */}
+
+          {/* Sign Out Modal */}
+          <Modal
+            show={showSignOutModal}
+            onClose={() => setShowSignOutModal(false)}
+            onConfirm={confirmSignOut}
+            title="Confirm Sign Out"
+          >
+            Are you sure you want to sign out?
+          </Modal>
+
+          {/* Delete Account Modal */}
+          <Modal
+            show={showDeleteAccountModal}
+            onClose={() => setShowDeleteAccountModal(false)}
+            onConfirm={confirmDeleteAccount}
+            title="Confirm Delete Account"
+          >
+            Are you sure you want to delete your account? This action cannot be undone.
+          </Modal>
+
+          {/* Toasts */}
+          {toasts.map((toast) => (
+            <Toast
+              key={toast.id}
+              id={toast.id}
+              type={toast.type}
+              message={toast.message}
+              onClose={removeToast}
+            />
+          ))}
+          <div>
+            <br />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
