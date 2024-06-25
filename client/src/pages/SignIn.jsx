@@ -7,10 +7,12 @@ import {
   signInFailure,
 } from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
+import Toast from '../components/Toast';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
+  const [toasts, setToasts] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -19,6 +21,16 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
+  // Function to show toast
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  // Function to remove toast
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,12 +46,15 @@ export default function SignIn() {
       console.log(data);
       if (data.success === false) {
         dispatch(signInFailure(data.message));
+        showToast('error', data.message); // Show error toast
         return;
       }
       dispatch(signInSuccess(data));
+      showToast('success', data.message); // Show error toast
       navigate('/');
     } catch (error) {
       dispatch(signInFailure(error.message));
+      showToast('error', error.message); // Show error toast
     }
   };
   return (
@@ -75,7 +90,17 @@ export default function SignIn() {
           <span className='text-blue-700'>Sign up</span>
         </Link>
       </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
+      {/* {error && <p className='text-red-500 mt-5'>{error}</p>} */}
+      {/* Toasts */}
+      {toasts.map((toast) => (
+            <Toast
+              key={toast.id}
+              id={toast.id}
+              type={toast.type}
+              message={toast.message}
+              onClose={removeToast}
+            />
+          ))}
     </div>
   );
 }

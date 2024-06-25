@@ -9,6 +9,9 @@ import PrivateRoute from './components/PrivateRoute';
 import Form from './pages/Form';
 import Footer from './components/Footer';
 import Services from './pages/Services';
+import AdminPrivateRoute from './components/AdminPrivateRoute';
+import Console from './pages/Console';
+
 
 export default function App() {
   return (
@@ -26,6 +29,9 @@ export default function App() {
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />
               <Route path='/profile' element={<Profile />} />
+            </Route>
+            <Route element={<AdminPrivateRoute />}>
+              <Route path='/console' element={<Console />} />
             </Route>
           </Routes>
         </div>

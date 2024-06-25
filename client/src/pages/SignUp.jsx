@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import Toast from '../components/Toast';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [toasts, setToasts] = useState([]);
   const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
@@ -13,6 +15,18 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     });
   };
+
+  // Function to show toast
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  // Function to remove toast
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,10 +39,11 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+      
       if (data.success === false) {
         setLoading(false);
         setError(data.message);
+        showToast('error', data.message); // Show error toast
         return;
       }
       setLoading(false);
@@ -37,6 +52,7 @@ export default function SignUp() {
     } catch (error) {
       setLoading(false);
       setError(error.message);
+      showToast('error', error.message);
     }
   };
   return (
