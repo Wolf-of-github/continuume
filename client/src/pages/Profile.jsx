@@ -30,6 +30,8 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
     if (file) {
       handleFileUpload(file);

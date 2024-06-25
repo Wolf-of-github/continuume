@@ -48,3 +48,27 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
+// Function to create initial admin user
+// export const createInitialAdmin = async (req, res) => {
+//   try {
+    
+//     const existingAdmin = await User.findOne({ role: 'admin' });
+//     if (existingAdmin) {
+//       return res.status(400).json({ message: 'Admin user already exists' });
+//     }
+//     const adminUser = new User({
+//       username: 'admin',
+//       email: 'ishaanmapte@outlook.com',
+//       password: bcryptjs.hashSync('masterPassword0108', 10),
+//       role: 'admin'
+//     });
+
+//     await adminUser.save();
+//     res.status(201).json({ message: 'Admin user created successfully' });
+
+//   } catch (error) {
+//     console.error('Error creating admin user:', error.message);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
