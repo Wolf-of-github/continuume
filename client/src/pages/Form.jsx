@@ -143,7 +143,7 @@ const Form = () => {
         <Sidebar className = "" onSelect={setSelectedForm} />
       </div>
       
-      <div className="flex-1 grid grid-rows-10 pb-3 bg-gray-800">
+      <div className="flex-1 grid grid-rows-10 pb-3 bg-gray-800"> 
         
         <div className="col-span-2 row-span-9  overflow-auto pl-3 py-5 pr-3">
           {renderFormSection()}
@@ -160,17 +160,11 @@ const Form = () => {
                   Next
                 </button>
               </div>
-              <button 
-                className={`px-4 py-2 rounded mr-6 ${
-                  userIdToView === currentUser._id && formDataModified
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                }`}
-                onClick={saveFormData}
-                disabled={userIdToView !== currentUser._id}
-              >
+              
+              <button className={`px-4 py-2 rounded mr-3 ${formDataModified && userIdToView === null ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled = {!formDataModified && !userIdToView == null}>
                 Save
               </button>
+            
             </div>
         </div>
       

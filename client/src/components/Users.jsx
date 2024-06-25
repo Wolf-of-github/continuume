@@ -81,7 +81,7 @@ const Users = () => {
 
                     <td className = "border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <button className="rounded-full bg-green-200 px-3 py-1 text-xs font-semibold text-green-900" onClick={()=>handleUserToView(user._id)}>
-                        Active
+                        View form
                       </button>
                     </td>
                   </tr>
