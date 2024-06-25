@@ -68,3 +68,15 @@ export const signout = (req, res) =>{
     next(error)
   }
 }
+
+export const getAllUsers = async (req, res, next) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return next(errorHandler(403, 'Access denied.'));
+    }
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
