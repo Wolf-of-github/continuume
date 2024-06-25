@@ -141,7 +141,7 @@ const PersonalDetails = ({ data, onChange }) => {
   };
   
   return (
-    <div className="">
+    <div className="" id = 'pds'>
       <h2>Personal Details</h2>
       <form>
         <div>
@@ -211,20 +211,7 @@ const PersonalDetails = ({ data, onChange }) => {
               </div>
             )
           }
-        </div>
-
-        <div>hey</div>
-        <br />
-        <div>hey</div>
-        <br />
-        <div>hey</div>
-        <br />
-        <div>hey</div>
-        <br />
-        <div>hey</div>
-        <br />
-        <div>hey</div>
-        <br />        
+        </div>   
       </form>
     </div>
   );

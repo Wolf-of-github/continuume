@@ -129,19 +129,19 @@ const Form = () => {
   };
   
   return (
-    <div className="flex h-screen sticky">
+    <div className="flex h-screen ">
 
       <div className="flex bg-blue-200"> {/* Section 1 */}
         <Sidebar className = "" onSelect={setSelectedForm} />
       </div>
       
-      <div class="flex-1 grid grid-rows-10 ">
+      <div class="flex-1 grid grid-rows-10 pb-3 bg-gray-800">
         
-        <div class="col-span-2 row-span-9 bg-gray-800 overflow-auto pl-3 py-5">
+        <div class="col-span-2 row-span-9  overflow-auto pl-3 py-5 pr-3">
           {renderFormSection()}
         </div>
         
-        <div class="col-span-2 bg-gray-800 ">
+        <div class="col-span-2">
             <div className="flex justify-between">
               <div>
                 <button className={`px-4 py-2 rounded ml-3 ${selectedForm !== 'PersonalDetails' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>

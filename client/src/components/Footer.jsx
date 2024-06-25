@@ -4,13 +4,12 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer style={{borderTop: "0.5px solid white"}} className="bg-gray-800 text-white p-4 text-center flex justify-evenly border-t-2 border-white ">
-      
-      <div>
+    <footer style={{borderTop: "0.5px solid white"}} className="bg-gray-800 p-2 text-center flex justify-between">
+      <div className='text-white font-thin text-xs'>
         © 2024 Your Company. All rights reserved.
       </div>
       <div>
-      <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+      <ul class="flex flex-wrap items-center mt-3 text-gray-500 font-thin text-xs sm:mt-0">
             <li>
                 <a href="#" class="hover:underline me-4 md:me-6">About</a>
             </li>
