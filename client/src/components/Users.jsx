@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { selectUserIdToView, setUserToView, clearUserToView } from '../redux/form/formSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 
 const Users = () => {
+  
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,6 +28,11 @@ const Users = () => {
 
     fetchUsers();
   }, []);
+
+  const handleUserToView = (userId) =>{
+    dispatch(setUserToView(userId));
+    navigate('/form')
+  }
 
   return (
     <div>
@@ -67,7 +80,9 @@ const Users = () => {
                     </td>
 
                     <td className = "border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <button className="rounded-full bg-green-200 px-3 py-1 text-xs font-semibold text-green-900">Active</button>
+                      <button className="rounded-full bg-green-200 px-3 py-1 text-xs font-semibold text-green-900" onClick={()=>handleUserToView(user._id)}>
+                        Active
+                      </button>
                     </td>
                   </tr>
                   

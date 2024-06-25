@@ -4,10 +4,13 @@ import PersonalDetails from '../components/PersonalDetails';
 import Education from '../components/Education';
 import TravelAndVisa from '../components/TravelAndVisa';
 import { useSelector } from 'react-redux';
+import { selectUserIdToView } from '../redux/form/formSlice';
 
 const Form = () => {
   
   const { currentUser } = useSelector((state) => state.user);
+  const userIdToView = useSelector(selectUserIdToView);
+  // console.log("userIdToView:", userIdToView);
 
   const [formData, setFormData] = useState({
     personal_details: {
@@ -30,16 +33,18 @@ const Form = () => {
   const [formExists, setFormExists] = useState(false); 
   const [selectedForm, setSelectedForm] = useState('PersonalDetails');
   const [formDataModified, setFormDataModified] = useState(false); // Track if formData has been modified
-  console.log(selectedForm)
+  
   useEffect(() => {
-    if (currentUser) {
+    
       fetchData();
-    }
-  }, [currentUser]);
+    
+  }, []);
 
   const fetchData = async () => {
     try {
-      const userId = currentUser._id;
+    
+      const userId = userIdToView !== null ? userIdToView : currentUser._id;
+      
       const res = await fetch(`/api/form/read/${userId}`);
       const data = await res.json();
 
@@ -152,8 +157,15 @@ const Form = () => {
                   Next
                 </button>
               </div>
-
-              <button className={`px-4 py-2 rounded mr-6 ${formDataModified ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified}>
+              <button 
+                className={`px-4 py-2 rounded mr-6 ${
+                  userIdToView === currentUser._id && formDataModified
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+                onClick={saveFormData}
+                disabled={userIdToView !== currentUser._id}
+              >
                 Save
               </button>
             </div>
