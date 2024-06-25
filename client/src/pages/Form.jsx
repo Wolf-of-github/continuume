@@ -5,6 +5,7 @@ import Education from '../components/Education';
 import TravelAndVisa from '../components/TravelAndVisa';
 import { useSelector } from 'react-redux';
 import { selectUserIdToView } from '../redux/form/formSlice';
+import Chat from '../components/Chat';
 
 const Form = () => {
   
@@ -137,19 +138,23 @@ const Form = () => {
   };
   
   return (
-    <div className="flex h-screen ">
 
-      <div className="flex bg-blue-200"> {/* Section 1 */}
-        <Sidebar className = "" onSelect={setSelectedForm} />
-      </div>
-      
-      <div className="flex-1 grid grid-rows-10 pb-3 bg-gray-800"> 
-        
-        <div className="col-span-2 row-span-9  overflow-auto pl-3 py-5 pr-3">
-          {renderFormSection()}
+      <div className="flex h-screen">
+        <div className="flex bg-blue-200"> {/* Section 1 */}
+          <Sidebar className="" onSelect={setSelectedForm} />
         </div>
         
-        <div className="col-span-2">
+        <div className="flex-1 grid grid-rows-10 grid-cols-4 bg-gray-800">
+          
+          <div className="row-span-9 col-span-3 overflow-auto pl-3 py-5 pr-3">
+            {renderFormSection()}
+          </div>
+          
+          <div style={{ borderLeft: "0.5px solid white" }} className="row-span-10 col-span-1 bg-gray-800">
+            <Chat/>           
+          </div>
+          
+          <div className="row-span-1 col-span-3">
             <div className="flex justify-between">
               <div>
                 <button className={`px-4 py-2 rounded ml-3 ${selectedForm !== 'PersonalDetails' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>
@@ -161,15 +166,14 @@ const Form = () => {
                 </button>
               </div>
               
-              <button className={`px-4 py-2 rounded mr-3 ${formDataModified && userIdToView === null ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled = {!formDataModified && !userIdToView == null}>
+              <button className={`px-4 py-2 rounded mr-3 ${formDataModified && userIdToView === null ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified && !userIdToView === null}>
                 Save
               </button>
-            
             </div>
+          </div>
+
         </div>
-      
       </div>
-    </div>
 
   );
 };
