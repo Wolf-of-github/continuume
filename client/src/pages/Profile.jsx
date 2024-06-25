@@ -19,6 +19,7 @@ import {
 import { useDispatch } from 'react-redux';
 import Modal from '../components/Modal';
 import Toast from '../components/Toast'; // Import your Toast component
+import { clearUserToView } from '../redux/form/formSlice';
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -123,6 +124,7 @@ export default function Profile() {
         return;
       }
       dispatch(deleteUserSuccess(data));
+      dispatch(clearUserToView())
     } catch (error) {
       dispatch(deleteUserFailure(data.message));
       showToast('error', error.message); // Show error toast

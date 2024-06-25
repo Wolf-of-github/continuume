@@ -55,14 +55,16 @@ export const deleteForm = async (req, res, next) => {
 
 
 export const readForm = async (req, res, next) => {
+  
   const formId = req.params.id;
   
   try {
     
     const form = await Form.findById(formId);
-
+    
     if (!form) {
-      return next(errorHandler(404, 'Form not found'));
+      
+      return res.status(404).json({ message: 'Form not found right now' });
     }
     res.status(200).json(form);
   } catch (error) {

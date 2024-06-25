@@ -37,7 +37,6 @@ const PersonalDetails = ({ data, onChange }) => {
       uploadTask.on("state_changed",
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
         },
         (error) => {
           reject(error);
@@ -77,7 +76,6 @@ const PersonalDetails = ({ data, onChange }) => {
         "state_changed",
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`upload is ${progress}% done`);
         },
         (error) => {
           reject(error);

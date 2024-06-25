@@ -10,7 +10,6 @@ const Form = () => {
   
   const { currentUser } = useSelector((state) => state.user);
   const userIdToView = useSelector(selectUserIdToView);
-  // console.log("userIdToView:", userIdToView);
 
   const [formData, setFormData] = useState({
     personal_details: {
@@ -39,26 +38,31 @@ const Form = () => {
       fetchData();
     
   }, []);
-
+  
+  
   const fetchData = async () => {
     try {
-    
       const userId = userIdToView !== null ? userIdToView : currentUser._id;
       
       const res = await fetch(`/api/form/read/${userId}`);
       const data = await res.json();
-
+  
       if (!res.ok) {
-        throw new Error(data.message || 'Failed to fetch form data');
+        if (res.status != 404) {
+          throw new Error(data.message || 'Failed to fetch form data');
+        }
+        
       }
-
-      setFormData(data); // Populate form fields with retrieved data
-      setFormExists(true); // Set formExists to true if form data exists
-
+      else{
+        setFormData(data); // Populate form fields with retrieved data
+        setFormExists(true); // Set formExists to true if form data exists
+      }
+  
     } catch (error) {
       console.error('Error fetching form data:', error.message);
     }
   };
+  
 
   const handleFormDataChange = (section, data) => {
     setFormData((prevFormData) => ({
@@ -87,7 +91,6 @@ const Form = () => {
         throw new Error(data.message || 'Failed to save form data');
       }
       
-      console.log('Form data saved successfully:', data);
       setFormDataModified(false); // Reset formDataModified after successful save
     } catch (error) {
       console.error('Error saving form data:', error.message);
@@ -140,13 +143,13 @@ const Form = () => {
         <Sidebar className = "" onSelect={setSelectedForm} />
       </div>
       
-      <div class="flex-1 grid grid-rows-10 pb-3 bg-gray-800">
+      <div className="flex-1 grid grid-rows-10 pb-3 bg-gray-800">
         
-        <div class="col-span-2 row-span-9  overflow-auto pl-3 py-5 pr-3">
+        <div className="col-span-2 row-span-9  overflow-auto pl-3 py-5 pr-3">
           {renderFormSection()}
         </div>
         
-        <div class="col-span-2">
+        <div className="col-span-2">
             <div className="flex justify-between">
               <div>
                 <button className={`px-4 py-2 rounded ml-3 ${selectedForm !== 'PersonalDetails' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>
