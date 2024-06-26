@@ -151,7 +151,7 @@ const Form = () => {
           </div>
           
           <div style={{ borderLeft: "0.5px solid white" }} className="row-span-10 col-span-1 bg-gray-800">
-            <Chat/>           
+            <Chat selectedForm={selectedForm}/>           
           </div>
           
           <div className="row-span-1 col-span-3">

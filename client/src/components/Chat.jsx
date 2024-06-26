@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUserIdToView } from '../redux/form/formSlice';
 
-export default function Chat() {
-  
+export default function Chat({ selectedForm }) {
   const { currentUser } = useSelector((state) => state.user);
   const userIdToView = useSelector(selectUserIdToView);
   const [chats, setChats] = useState([]);
   const [message, setMessage] = useState('');
-  
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedForm]); // Trigger fetchData whenever selectedForm changes
 
   const fetchData = async () => {
     try {
@@ -24,7 +23,7 @@ export default function Chat() {
           throw new Error(data.message || 'Failed to fetch chat data');
         }
       } else {
-        setChats(data);
+        setChats(data); // Store all fetched messages in state
       }
     } catch (error) {
       console.error('Error fetching chat data:', error.message);
@@ -41,7 +40,7 @@ export default function Chat() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, section: selectedForm }),
       });
 
       if (!res.ok) {
@@ -49,7 +48,7 @@ export default function Chat() {
       }
 
       setMessage('');
-      fetchData();
+      fetchData(); // Refetch all messages after sending a new message
     } catch (error) {
       console.error('Error sending message:', error.message);
     }
@@ -61,27 +60,43 @@ export default function Chat() {
     }
   };
 
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
+
   return (
     <div className="flex-1 grid grid-rows-10 grid-cols-1 bg-gray-800 h-screen">
-      <div className="row-span-9 overflow-auto col-span-1 custom-scrollbar">
+      <div className="row-span-9 overflow-auto col-span-1 custom-scrollbar mb-2">
         <div className="flex flex-col mt-5 ml-2 mr-2">
-          {chats.map((chat) => (
-            <div
-              key={chat._id}
-              className={`flex justify-${chat.messageFrom === 'admin' ? 'end' : 'start'} mb-4`}
-            >
+          {chats
+            .filter((chat) => chat.section === selectedForm) // Filter messages based on selectedForm
+            .map((chat) => (
               <div
-                className={`${
-                  chat.messageFrom === 'admin' ? 'bg-blue-400' : 'bg-gray-400'
-                } mr-2 py-3 px-4 rounded-3xl text-white`}
+                key={chat._id}
+                className={`flex justify-${chat.messageFrom === 'admin' ? 'end' : 'start'} mb-4`}
               >
-                {chat.message}
+                <div className="relative max-w-xl px-4 py-2 text-white">
+                  <div
+                    className={`block relative ${
+                      chat.messageFrom === 'admin' ? 'bg-blue-400' : 'bg-gray-400'
+                    } px-4 py-2 rounded-lg`}
+                  >
+                    {chat.message}
+                    <span className="text-xs text-gray-300 flex">
+                      {formatTimestamp(chat.timestamp)}
+                    </span>
+                  </div>
+                  <span
+                    className={`absolute w-3 h-3 transform rotate-45 ${
+                      chat.messageFrom === 'admin' ? 'bg-blue-400' : 'bg-gray-400'
+                    } ${chat.messageFrom === 'admin' ? 'bottom-0 right-0 mr-1' : 'bottom-0 left-0 ml-1'}`}
+                  ></span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
-
       <div className="col-span-1 flex justify-center px-4">
         <form onSubmit={handleSubmit} className="w-full max-w-lg">
           <input
@@ -95,7 +110,6 @@ export default function Chat() {
           {/* No need for a submit button */}
         </form>
       </div>
-
       <style jsx="true">{`
         .custom-scrollbar::-webkit-scrollbar {
           display: none;

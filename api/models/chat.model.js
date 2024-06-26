@@ -7,6 +7,7 @@ const chatSchema = new Schema({
     messageFrom: { type: String, required: true },
     message: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
+    section: {type: String, default: "Generic"},
   }],
 }, { timestamps: true });
 

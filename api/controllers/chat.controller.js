@@ -3,7 +3,7 @@ import { errorHandler } from '../utils/error.js';
 
 export const createAndUpdateChats = async (req, res, next) => {
 
-  const { message } = req.body;
+  const { message, section } = req.body;
   const chatId = req.params.id;
 
   try {
@@ -19,6 +19,7 @@ export const createAndUpdateChats = async (req, res, next) => {
     chat.chats.push({
       messageFrom: req.user.role,
       message: message,
+      section: section,
       timestamp: Date.now(),
     });
 
