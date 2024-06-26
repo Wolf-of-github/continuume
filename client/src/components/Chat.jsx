@@ -96,7 +96,7 @@ export default function Chat() {
         </form>
       </div>
 
-      <style jsx>{`
+      <style jsx="true">{`
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
         }
