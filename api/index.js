@@ -5,6 +5,7 @@ import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js'
 import formRouter from './routes/form.route.js'
 import chatRouter from './routes/chat.route.js'
+import resourceRouter from './routes/resource.route.js'
 import cookieParser from 'cookie-parser';
 import logger from '../logger.js';
 
@@ -38,6 +39,7 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/form', formRouter)
 app.use('/api/chat', chatRouter)
+app.use('/api/resource', resourceRouter)
 
 
 app.use((err, req, res, next) =>{
