@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import GoToForm from '../components/GoToForm';
+import GoToResource from '../components/GoToResource'
+import Calendar from '../components/Calendar';
 
 
 const Home = () => {
@@ -11,10 +13,14 @@ const Home = () => {
     <div className="home">
       {currentUser ? (
         <div className='bg-slate-100 h-dvh'>
-          <GoToForm /> {/* Display the card component if user is logged in */}
+          <GoToForm />
+          <GoToResource/>
         </div>
       ) : (
-        <div>Please log in to see personalized content.</div>
+        <div>Please log in to see personalized content.
+          <Calendar />
+        </div>
+        
       )}
     </div>
   );

@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import Services from './pages/Services';
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import Console from './pages/Console';
+import Resource from './pages/Resource';
 
 
 export default function App() {
@@ -25,6 +26,8 @@ export default function App() {
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/about' element={<About />} />
             <Route path='/services' element={<Services />} />
+            <Route path='/resource' element={<Resource />} />
+            
             {/* PrivateRoute wrapper for protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />

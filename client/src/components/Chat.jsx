@@ -104,7 +104,7 @@ export default function Chat({ selectedForm }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-4 py-2 rounded bg-gray-300"
+            className="w-full px-4 py-2 rounded bg-gray-300 focus:outline-none"
             placeholder="Enter message"
           />
           {/* No need for a submit button */}

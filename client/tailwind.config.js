@@ -7,5 +7,9 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@fullcalendar/core'),
+    require('@fullcalendar/daygrid'),
+    require('@fullcalendar/core'),
+  ],
 }
