@@ -47,7 +47,7 @@ export const readResource = async (req, res, next) => {
 }
 
 export const deleteResource = async (req, res, next) => {
-  console.log('reached here')
+  
   if (req.user.role != 'admin'){
       return res.status(401).json("Only admin can delete resources")
     }
