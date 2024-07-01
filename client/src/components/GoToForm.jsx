@@ -23,7 +23,7 @@ export default function GoToForm() {
   return (
     <div className="flex"> 
       
-      <div className="bg-white rounded-lg shadow-md p-6 max-w-md w-full mt-4 ml-4">
+      <div className="bg-white rounded-lg shadow-md p-6 max-w-md w-full ">
         <h2 className="text-xl font-bold text-gray-800 mb-3">Application</h2>
         <p className="text-gray-600 mb-4">Please complete the series of forms to proceed with your application.</p>
 

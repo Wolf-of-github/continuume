@@ -12,6 +12,7 @@ import Services from './pages/Services';
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import Console from './pages/Console';
 import Resource from './pages/Resource';
+import Events from './pages/Events';
 
 
 export default function App() {
@@ -26,12 +27,13 @@ export default function App() {
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/about' element={<About />} />
             <Route path='/services' element={<Services />} />
-            <Route path='/resource' element={<Resource />} />
-            
+
             {/* PrivateRoute wrapper for protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />
               <Route path='/profile' element={<Profile />} />
+              <Route path='/events' element={<Events />} />
+              <Route path='/resource' element={<Resource />} />
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path='/console' element={<Console />} />

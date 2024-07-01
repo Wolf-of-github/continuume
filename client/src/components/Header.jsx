@@ -12,7 +12,7 @@ export default function Header() {
         
         <Link to = '/' className = "flex items-center space-x-3 rtl:space-x-reverse">
             <img src="https://flowbite.com/docs/images/logo.svg " className = "h-8" alt="Flowbite Logo" />
-            <span className = "self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Continuume</span>
+            <span className = "self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Ledge</span>
         </Link>
 
         <div className = "hidden w-full md:block md:w-auto" id="navbar-solid-bg">

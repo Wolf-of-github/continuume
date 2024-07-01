@@ -11,5 +11,6 @@ export default {
     require('@fullcalendar/core'),
     require('@fullcalendar/daygrid'),
     require('@fullcalendar/core'),
+    require('@fullcalendar/interaction'),
   ],
 }

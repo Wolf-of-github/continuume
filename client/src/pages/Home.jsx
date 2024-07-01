@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import GoToForm from '../components/GoToForm';
 import GoToResource from '../components/GoToResource'
 import Calendar from '../components/Calendar';
+import GoToEvents from '../components/GoToEvents';
 
 
 const Home = () => {
@@ -13,12 +14,14 @@ const Home = () => {
     <div className="home">
       {currentUser ? (
         <div className='bg-slate-100 h-dvh'>
-          <GoToForm />
-          <GoToResource/>
+          <div className='flex justify-around gap-4 p-6'>
+            <GoToForm />
+            <GoToResource/>
+            <GoToEvents/>
+          </div>
         </div>
       ) : (
         <div>Please log in to see personalized content.
-          <Calendar />
         </div>
         
       )}
