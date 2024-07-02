@@ -5,6 +5,7 @@ import GoToForm from '../components/GoToForm';
 import GoToResource from '../components/GoToResource'
 import Calendar from '../components/Calendar';
 import GoToEvents from '../components/GoToEvents';
+import GoToAnnouncement from '../components/GoToAnnouncement';
 
 
 const Home = () => {
@@ -14,10 +15,13 @@ const Home = () => {
     <div className="home">
       {currentUser ? (
         <div className='bg-slate-100 h-dvh'>
-          <div className='flex justify-around gap-4 p-6'>
+          <div className='flex justify-around gap-4 px-4 pt-4'>
             <GoToForm />
             <GoToResource/>
             <GoToEvents/>
+          </div>
+          <div className='flex justify-center gap-4 p-6 '>
+            <GoToAnnouncement/>
           </div>
         </div>
       ) : (
