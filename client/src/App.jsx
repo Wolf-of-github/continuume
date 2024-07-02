@@ -13,6 +13,9 @@ import AdminPrivateRoute from './components/AdminPrivateRoute';
 import Console from './pages/Console';
 import Resource from './pages/Resource';
 import Events from './pages/Events';
+import UserManagement from './pages/UserManagement';
+import ResourceManagement from './pages/ResourceManagement';
+import EventsManagement from './pages/EventsManagement';
 
 
 export default function App() {
@@ -37,6 +40,10 @@ export default function App() {
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path='/console' element={<Console />} />
+              <Route path='/manage-users' element={<UserManagement />} />
+              <Route path='/manage-resources' element={<ResourceManagement />} />
+              <Route path='/manage-events' element={<EventsManagement />} />
+              
             </Route>
           </Routes>
         </div>

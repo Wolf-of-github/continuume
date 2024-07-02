@@ -24,6 +24,7 @@ const eventsSchema = new Schema({
   },
   eventBannerImage: {
     type: String,
+    // default: "https://bbdniit.ac.in/wp-content/uploads/2020/09/banner-background-without-image-min.jpg"
   },
   eventDescription: {
     type: String,
