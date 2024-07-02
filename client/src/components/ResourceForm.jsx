@@ -110,7 +110,7 @@ const ResourceForm = ({onUploadSuccess}) => {
   return (
     <div className="mx-auto max-w-screen-lg pb-4">
       <form className="w-full mx-auto rounded-lg border p-4" onSubmit={handleFormSubmit}>
-        <h2 className="font-semibold text-gray-800 mb-3 text-center">Upload Resource</h2>
+        {/* <h2 className="font-semibold text-gray-800 mb-3 text-center">Upload Resource</h2> */}
         <div className="relative z-0 w-full mb-5 group">
           
           <input type="text" value={resourceName} onChange={(e) => setResourceName(e.target.value)} name="resName" id="resNameGiven" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-500 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" required />
@@ -160,7 +160,7 @@ const ResourceForm = ({onUploadSuccess}) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="text-green-900 bg-green-200 hover:bg-green-300 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-200 dark:hover:bg-green-300 dark:focus:ring-green-300 mt-4 font-semibold"
+            className="text-green-900 bg-green-200 hover:bg-green-300 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-200 dark:hover:bg-green-300 dark:focus:ring-green-300 mt-4 font-semibold"
           >
             Upload
           </button>

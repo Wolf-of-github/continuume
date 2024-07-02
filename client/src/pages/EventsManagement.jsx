@@ -5,7 +5,6 @@ import EventManage from '../components/EventManage'
 export default function EventsManagement() {
   return (
     <div>
-      {/* <EventsEdit/> */}
       <EventManage/>
     </div>
   )
