@@ -45,7 +45,7 @@ export default function Events() {
                 )
               }
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 mb-2">
 
                 {/* Event name */}
                 <div>
