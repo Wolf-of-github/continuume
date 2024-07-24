@@ -214,7 +214,27 @@ const formSchema = new Schema({
         referenceInstitutionAdd: {type: String},
         fileUrl: {type: String}
       }
-  ]
+  ],
+  workDetails: [
+    {
+      jobTitle: {type: String, required: true},
+      organiztionName: String,
+      organiztionAdd: String,
+      organiztionPhone: String,
+      startDate: String,
+      endDate: String,
+      jobCertificate: String,
+    }
+  ],
+  documents:{
+    resume: String,
+    passport: String,
+    tenthMS: String,
+    twelfthMS: String,
+    sop: String,
+    personalHistory: String,
+    bachelorsMarkSheets: [String]
+  }
   
 }, { timestamps: true });
 

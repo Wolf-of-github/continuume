@@ -3,41 +3,40 @@ import {BSON} from "realm-web";
 import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
-const References = ({ data, onChange }) => {
-  
-  const [references, setReferences] = useState(data); 
+const WorkDetails = ({ data, onChange }) => {
 
-  const handleAddReference = () => {
-    setReferences([
-      ...references,
+  const [workDetails, setWorkDetails] = useState(data); 
+
+  const handleAddWorkDetails = () => {
+    setWorkDetails([
+      ...workDetails,
       {
         _id: BSON.ObjectID(BSON.ObjectID.generate()).toHexString(),
-        referenceName: '',
-        referencePosition: '',
-        referenceTitle: '',
-        referenceWorkEmail: '',
-        referenceKnowDuration: '',
-        referencePhone: '',
-        referenceRelationship: '',
-        referenceInstitution: '',
-        referenceInstitutionAdd: '',
-        fileUrl: ''
-      },
+        jobTitle: '',
+        organiztionName: '',
+        organiztionAdd: '',
+        organiztionPhone: '',
+        startDate: '',
+        endDate: '',
+        jobCertificate: '',
+        },
     ]);
   };
+  
+  
 
   const handleInputChange = (index, e) => {
     const { name, value } = e.target;
-    const updatedReferences = [...references];
-    updatedReferences[index] = { ...updatedReferences[index], [name]: value };
-    setReferences(updatedReferences);
-    onChange(updatedReferences);
+    const updatedWorkDetails = [...workDetails];
+    updatedWorkDetails[index] = { ...updatedWorkDetails[index], [name]: value };
+    setWorkDetails(updatedWorkDetails);
+    onChange(updatedWorkDetails);
   };
 
-  const handleRemoveReference = (index) => {
-    const updatedReferences = references.filter((_, i) => i !== index);
-    setReferences(updatedReferences);
-    onChange(updatedReferences);
+  const handleRemoveWorkDetails = (index) => {
+    const updatedWorkDetails = workDetails.filter((_, i) => i !== index);
+    setWorkDetails(updatedWorkDetails);
+    onChange(updatedWorkDetails);
   };
 
   const storeFile = async (file) => {
@@ -67,158 +66,116 @@ const References = ({ data, onChange }) => {
   const handleFileUpload = async (index, file) => {
     try {
       const downloadURL = await storeFile(file);
-      const updatedReferences = [...references];
-      updatedReferences[index].fileUrl = downloadURL;
-      setReferences(updatedReferences);
-      onChange(updatedReferences);
+      const updatedWorkDetails = [...workDetails];
+      updatedWorkDetails[index].jobCertificate = downloadURL;
+      setWorkDetails(updatedWorkDetails);
+      onChange(updatedWorkDetails);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
 
   const handleFileDelete = (index) => {
-    const updatedReferences = [...references];
-    updatedReferences[index].fileUrl = ''; // Remove file URL
-    setReferences(updatedReferences);
-    onChange(updatedReferences);
+    const updatedWorkDetails = [...workDetails];
+    updatedWorkDetails[index].jobCertificate = ''; 
+    setWorkDetails(updatedWorkDetails);
+    onChange(updatedWorkDetails);
   };
 
   return (
     <div>
-      <h2>References</h2>
+      <h2>Work Details</h2>
       <form>
-        {references.map((reference, index) => (
+        {workDetails.map((workDetail, index) => (
           <div key={index} className="mb-4 p-4 border border-gray-300 rounded-md">
             <div className='grid grid-cols-2 gap-4'>
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Name
+                  Job Title
                 </label>
                 <input
                   type='text'
-                  name='referenceName'
+                  name='jobTitle'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceName}
+                  value={workDetail.jobTitle}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter reference name'
+                  placeholder='Enter job title'
                 />
               </div>
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Position
+                  Organiztion Name
                 </label>
                 <input
                   type='text'
-                  name='referencePosition'
+                  name='organiztionName'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referencePosition}
+                  value={workDetail.organiztionName}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter reference position'
+                  placeholder='Enter organiztion name offering the job'
                 />
               </div>
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Title
+                Organiztion Address
                 </label>
                 <input
                   type='text'
-                  name='referenceTitle'
+                  name='organiztionAdd'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceTitle}
+                  value={workDetail.organiztionAdd}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter reference title'
+                  placeholder='Enter organiztion location or city'
                 />
               </div>
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Work Email
+                  Organiztion Phone or Contact
                 </label>
                 <input
-                  type='email'
-                  name='referenceWorkEmail'
+                  type='text'
+                  name='organiztionPhone'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceWorkEmail}
+                  value={workDetail.organiztionPhone}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter reference work email'
+                  placeholder='Enter organization contact info'
                 />
               </div>
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Duration Known
+                  Job start date
                 </label>
                 <input
-                  type='text'
-                  name='referenceKnowDuration'
+                  type='date'
+                  name='startDate'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceKnowDuration}
+                  value={workDetail.startDate}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter duration known'
+                  placeholder='Enter exact job start date'
                 />
               </div>
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Phone
+                  Job end date
                 </label>
                 <input
-                  type='text'
-                  name='referencePhone'
+                  type='date'
+                  name='endDate'
                   className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referencePhone}
+                  value={workDetail.endDate}
                   onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter reference phone'
-                />
-              </div>
-
-              <div className='col-span-1'>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Relationship
-                </label>
-                <input
-                  type='text'
-                  name='referenceRelationship'
-                  className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceRelationship}
-                  onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter relationship'
-                />
-              </div>
-
-              <div className='col-span-1'>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Institution
-                </label>
-                <input
-                  type='text'
-                  name='referenceInstitution'
-                  className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceInstitution}
-                  onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter institution'
+                  placeholder='Enter job end date'
                 />
               </div>
 
               <div className='col-span-2'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Institution Address
-                </label>
-                <input
-                  type='text'
-                  name='referenceInstitutionAdd'
-                  className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={reference.referenceInstitutionAdd}
-                  onChange={(e) => handleInputChange(index, e)}
-                  placeholder='Enter institution address'
-                />
-              </div>
-
-              <div className='col-span-2'>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Document
+                  Certification
                 </label>
                 <input
                   type='file'
@@ -229,9 +186,9 @@ const References = ({ data, onChange }) => {
                     }
                   }}
                 />
-                {reference.fileUrl && (
+                {workDetail.fileUrl && (
                   <div className='mt-2'>
-                    <a href={reference.fileUrl} target='_blank' rel='noopener noreferrer'>
+                    <a href={workDetail.fileUrl} target='_blank' rel='noopener noreferrer'>
                       View Document
                     </a>
                     <button
@@ -251,9 +208,9 @@ const References = ({ data, onChange }) => {
             <button
               type='button'
               className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
-              onClick={() => handleRemoveReference(index)}
+              onClick={() => handleRemoveWorkDetails(index)}
             >
-              Remove Reference
+              Remove Job
             </button>
           </div>
         ))}
@@ -261,13 +218,13 @@ const References = ({ data, onChange }) => {
         <button
           type='button'
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleAddReference}
+          onClick={handleAddWorkDetails}
         >
-          Add Reference
+          Add Job
         </button>
       </form>
     </div>
   );
 };
 
-export default References;
+export default WorkDetails;

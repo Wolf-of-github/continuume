@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import PersonalDetails from '../components/PersonalDetails';
 import References from '../components/References';
+import WorkDetails from '../components/WorkDetails';
+import Documents from '../components/Documents';
 import Education from '../components/Education';
 import TravelAndVisa from '../components/TravelAndVisa';
 import { useSelector } from 'react-redux';
@@ -33,10 +35,6 @@ const Form = () => {
       postalCodeP: '',
       stateP: '',
       cityP: '',
-      // addressC: '',
-      // postalCodeC: '',
-      // stateC: '',
-      // cityC: '',
       emergencyContactName: '',
       emergencyContactNumber: '',
       emergencyContactEmail: '',
@@ -84,6 +82,16 @@ const Form = () => {
       refusalReason: '',
     },
     references:[],
+    workDetails: [],  
+    documents:{
+      resume: '',
+      passport: '',
+      tenthMS: '',
+      twelfthMS: '',
+      sop: '',
+      personalHistory: '',
+      bachelorsMarkSheets: []
+    }
   });
   
   const [formExists, setFormExists] = useState(false); 
@@ -123,8 +131,8 @@ const Form = () => {
 
   const handleFormDataChange = (section, data) => { 
     setFormData((prevFormData) => {
-      // Check if the section is 'references'
-      if (section === 'references') {
+      
+      if (section === 'references' || section === 'workDetails') {
         // Flatten the new data into an array format
         const flattenedData = Object.values(data);
         
@@ -134,7 +142,6 @@ const Form = () => {
         };
       }
   
-      // For other sections, merge the new data with the existing data
       return {
         ...prevFormData,
         [section]: { ...prevFormData[section], ...data },
@@ -180,9 +187,14 @@ const Form = () => {
       case 'Education':
         setSelectedForm('TravelAndVisa');
         break;
-
       case 'TravelAndVisa':
-          setSelectedForm('References');
+        setSelectedForm('References');
+        break;  
+      case 'References':
+        setSelectedForm('WorkDetails');
+        break;
+      case 'WorkDetails':
+          setSelectedForm('Documents');
           break;        
       default:
         break;
@@ -199,7 +211,13 @@ const Form = () => {
         break;
       case 'References':
         setSelectedForm('TravelAndVisa');
-        break;        
+        break;
+      case 'WorkDetails':
+        setSelectedForm('References');
+        break;
+      case 'Documents':
+        setSelectedForm('WorkDetails');
+        break;
       default:
         break;
     }
@@ -215,6 +233,10 @@ const Form = () => {
         return <TravelAndVisa data={formData.travelAndVisa} onChange={(data) => handleFormDataChange('travelAndVisa', data)} />;
       case 'References':
         return <References data = {formData.references} onChange = {(data) => handleFormDataChange('references', data)}/>
+      case 'WorkDetails':
+          return <WorkDetails data = {formData.workDetails} onChange = {(data) => handleFormDataChange('workDetails', data)}/>
+      case 'Documents':
+        return <Documents data={formData.documents} onChange={(data)=>handleFormDataChange('documents',data)}/>
       default:
         return <div>Select a form from the sidebar.</div>;
     }
@@ -244,7 +266,7 @@ const Form = () => {
                   Back
                 </button>
                 
-                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'References' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
+                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'Documents' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
                   Next
                 </button>
               </div>
