@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
 import {BSON} from "realm-web";
+import { app } from '../firebase';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const References = ({ data, onChange }) => {
-  const [references, setReferences] = useState(data);
-
-  const handleInputChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedReferences = [...references];
-    updatedReferences[index] = { ...updatedReferences[index], [name]: value };
-    setReferences(updatedReferences);
-    onChange(updatedReferences);
-  };
 
   const handleAddReference = () => {
     setReferences([
       ...references,
       {
-        
         _id: BSON.ObjectID(BSON.ObjectID.generate()).toHexString(),
         referenceName: '',
         referencePosition: '',
@@ -27,12 +19,66 @@ const References = ({ data, onChange }) => {
         referenceRelationship: '',
         referenceInstitution: '',
         referenceInstitutionAdd: '',
+        fileUrl: ''
       },
     ]);
+  };
+  
+  const [references, setReferences] = useState(data); 
+
+  const handleInputChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedReferences = [...references];
+    updatedReferences[index] = { ...updatedReferences[index], [name]: value };
+    setReferences(updatedReferences);
+    onChange(updatedReferences);
   };
 
   const handleRemoveReference = (index) => {
     const updatedReferences = references.filter((_, i) => i !== index);
+    setReferences(updatedReferences);
+    onChange(updatedReferences);
+  };
+
+  const storeFile = async (file) => {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + file.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(progress)
+        },
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  }; 
+
+  const handleFileUpload = async (index, file) => {
+    try {
+      const downloadURL = await storeFile(file);
+      const updatedReferences = [...references];
+      updatedReferences[index].fileUrl = downloadURL;
+      setReferences(updatedReferences);
+      onChange(updatedReferences);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
+  const handleFileDelete = (index) => {
+    const updatedReferences = [...references];
+    updatedReferences[index].fileUrl = ''; // Remove file URL
     setReferences(updatedReferences);
     onChange(updatedReferences);
   };
@@ -169,6 +215,37 @@ const References = ({ data, onChange }) => {
                   placeholder='Enter institution address'
                 />
               </div>
+
+              <div className='col-span-2'>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Document
+                </label>
+                <input
+                  type='file'
+                  accept='application/pdf,image/*'
+                  onChange={(e) => {
+                    if (e.target.files[0]) {
+                      handleFileUpload(index, e.target.files[0]);
+                    }
+                  }}
+                />
+                {reference.fileUrl && (
+                  <div className='mt-2'>
+                    <a href={reference.fileUrl} target='_blank' rel='noopener noreferrer'>
+                      View Document
+                    </a>
+                    <button
+                      type='button'
+                      className="ml-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                      onClick={() => handleFileDelete(index)}
+                    >
+                      Delete Document
+                    </button>
+                  </div>
+                )}
+              </div>
+
+
             </div>
 
             <button

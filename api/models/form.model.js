@@ -212,6 +212,7 @@ const formSchema = new Schema({
         referenceRelationship: {type: String},
         referenceInstitution: {type: String},
         referenceInstitutionAdd: {type: String},
+        fileUrl: {type: String}
       }
   ]
   
