@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import PersonalDetails from '../components/PersonalDetails';
+import References from '../components/References';
 import Education from '../components/Education';
 import TravelAndVisa from '../components/TravelAndVisa';
 import { useSelector } from 'react-redux';
@@ -82,6 +83,7 @@ const Form = () => {
       refusalDate: '',
       refusalReason: '',
     },
+    references:[],
   });
   
   const [formExists, setFormExists] = useState(false); 
@@ -119,13 +121,29 @@ const Form = () => {
   };
   
 
-  const handleFormDataChange = (section, data) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [section]: { ...prevFormData[section], ...data },
-    }));
+  const handleFormDataChange = (section, data) => { 
+    setFormData((prevFormData) => {
+      // Check if the section is 'references'
+      if (section === 'references') {
+        // Flatten the new data into an array format
+        const flattenedData = Object.values(data);
+        
+        return {
+          ...prevFormData,
+          [section]: flattenedData,
+        };
+      }
+  
+      // For other sections, merge the new data with the existing data
+      return {
+        ...prevFormData,
+        [section]: { ...prevFormData[section], ...data },
+      };
+    });
+  
     setFormDataModified(true);
   };
+  
 
   const saveFormData = async () => {
     try {
@@ -147,6 +165,8 @@ const Form = () => {
       }
       
       setFormDataModified(false); // Reset formDataModified after successful save
+      await fetchData(); // Fetch the latest data after saving
+      
     } catch (error) {
       console.error('Error saving form data:', error.message);
     }
@@ -160,6 +180,10 @@ const Form = () => {
       case 'Education':
         setSelectedForm('TravelAndVisa');
         break;
+
+      case 'TravelAndVisa':
+          setSelectedForm('References');
+          break;        
       default:
         break;
     } 
@@ -173,6 +197,9 @@ const Form = () => {
       case 'TravelAndVisa':
         setSelectedForm('Education');
         break;
+      case 'References':
+        setSelectedForm('TravelAndVisa');
+        break;        
       default:
         break;
     }
@@ -186,6 +213,8 @@ const Form = () => {
         return <Education data={formData.education} onChange={(data) => handleFormDataChange('education', data)} />;
       case 'TravelAndVisa':
         return <TravelAndVisa data={formData.travelAndVisa} onChange={(data) => handleFormDataChange('travelAndVisa', data)} />;
+      case 'References':
+        return <References data = {formData.references} onChange = {(data) => handleFormDataChange('references', data)}/>
       default:
         return <div>Select a form from the sidebar.</div>;
     }
@@ -215,7 +244,7 @@ const Form = () => {
                   Back
                 </button>
                 
-                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'TravelAndVisa' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
+                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'References' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
                   Next
                 </button>
               </div>

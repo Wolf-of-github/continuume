@@ -42,10 +42,10 @@ export const readChats = async (req, res, next) => {
     const chat = await Chat.findById(chatId);
     
     if (!chat) {  
-      return res.status(404).json({ message: 'Chat not found right now' });
+      // return res.status(404).json({ message: 'Chat not found right now' });
     }
     res.status(200).json(chat.chats);
   } catch (error) {
-    next(errorHandler(500, error.message));
+    // next(errorHandler(500, error.message));
   }
 }

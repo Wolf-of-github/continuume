@@ -200,7 +200,21 @@ const formSchema = new Schema({
         return this.visaRefuse === "Yes";
       }
     }
-  }
+  },
+  references: [
+      {
+        referenceName: {type: String, required: true},
+        referencePosition: {type: String},
+        referenceTitle: {type: String},
+        referenceWorkEmail: {type: String},
+        referenceKnowDuration: {type: String},
+        referencePhone: {type: String},
+        referenceRelationship: {type: String},
+        referenceInstitution: {type: String},
+        referenceInstitutionAdd: {type: String},
+      }
+  ]
+  
 }, { timestamps: true });
 
 
