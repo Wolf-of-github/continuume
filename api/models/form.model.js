@@ -234,6 +234,18 @@ const formSchema = new Schema({
     sop: String,
     personalHistory: String,
     bachelorsMarkSheets: [String]
+  },
+  courseDetails:{
+    flyingAfter: {
+      type: String,
+      enum: ["Diploma", "Bachelors", "Twelfth"] 
+    },
+    interestedInCourses: [String]
+  },
+  university:{
+    uniChoice1: String,
+    uniChoice2: String,
+    uniChoice3: String,
   }
   
 }, { timestamps: true });

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import PersonalDetails from '../components/PersonalDetails';
+import CourseDetails from '../components/CourseDetails';
+import University from '../components/University';
 import References from '../components/References';
 import WorkDetails from '../components/WorkDetails';
 import Documents from '../components/Documents';
@@ -91,6 +93,15 @@ const Form = () => {
       sop: '',
       personalHistory: '',
       bachelorsMarkSheets: []
+    },
+    courseDetails:{
+      flyingAfter: '',
+      interestedInCourses: []
+    },
+    university:{
+    uniChoice1: '',
+    uniChoice2: '',
+    uniChoice3: '',    
     }
   });
   
@@ -195,7 +206,12 @@ const Form = () => {
         break;
       case 'WorkDetails':
           setSelectedForm('Documents');
-          break;        
+          break;
+      case 'Documents':
+          setSelectedForm('CourseDetails');
+          break;          
+      case 'CourseDetails':
+          setSelectedForm('University')
       default:
         break;
     } 
@@ -218,6 +234,10 @@ const Form = () => {
       case 'Documents':
         setSelectedForm('WorkDetails');
         break;
+      case 'CourseDetails':
+        setSelectedForm('Documents')
+      case 'University':
+        setSelectedForm('CourseDetails')
       default:
         break;
     }
@@ -237,6 +257,10 @@ const Form = () => {
           return <WorkDetails data = {formData.workDetails} onChange = {(data) => handleFormDataChange('workDetails', data)}/>
       case 'Documents':
         return <Documents data={formData.documents} onChange={(data)=>handleFormDataChange('documents',data)}/>
+      case 'CourseDetails':
+          return <CourseDetails data={formData.courseDetails} onChange={(data)=>handleFormDataChange('courseDetails',data)}/>        
+      case 'University':
+          return <University data={formData.university} onChange={(data)=>handleFormDataChange('university',data)}/>          
       default:
         return <div>Select a form from the sidebar.</div>;
     }
