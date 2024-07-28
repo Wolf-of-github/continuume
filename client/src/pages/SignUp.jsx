@@ -48,7 +48,9 @@ export default function SignUp() {
       }
       setLoading(false);
       setError(null);
-      navigate('/sign-in');
+      navigate('/email-verification-call-out');
+      
+
     } catch (error) {
       setLoading(false);
       setError(error.message);

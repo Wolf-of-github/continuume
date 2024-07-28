@@ -18,6 +18,8 @@ import ResourceManagement from './pages/ResourceManagement';
 import EventsManagement from './pages/EventsManagement';
 import Announcement from './pages/Announcement';
 import Messages from './pages/Messages';
+import VerifyEmail from './pages/VerifyEmail';
+import CheckEmail from './pages/CheckEmail';
 
 
 export default function App() {
@@ -32,7 +34,8 @@ export default function App() {
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/about' element={<About />} />
             <Route path='/services' element={<Services />} />
-
+            <Route path='/verify' element={<VerifyEmail />} />
+            <Route path = '/email-verification-call-out' element={<CheckEmail/>}/>
             {/* PrivateRoute wrapper for protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />

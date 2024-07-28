@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
-        // required: true,
+        required: true,
     },
     username: {
         type: String,
@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['external', 'admin'],
         default: 'external'
+    },
+    isVerified: {
+        type: String,
+        enum: ['YES', 'NO'],
+        default: 'NO' 
+    },
+    verificationToken: {
+        type: String,
     }
 }, { timestamps: true });
 
