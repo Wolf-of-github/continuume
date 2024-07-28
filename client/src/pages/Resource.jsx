@@ -43,46 +43,47 @@ export default function Resource() {
   };
 
   return (
-    <div className='h-screen bg-gray-800'>
-      <div className="grid grid-cols-5 gap-4 p-4 overflow-auto">
-        {resources.map(resource => (
-          <div key={resource._id} className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between">
-            <h2 className="text-2xl font-bold mb-2 text-center text-gray-900 text-wrap max-w-sm break-words">{resource.resourceName}</h2>
-            <p className="mb-4 text-center text-wrap text-slate-600">{resource.resourceDescription}</p>
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {resources.map(resource => (
+            <div key={resource._id} className="bg-gray-100 shadow-lg rounded-lg p-6 flex flex-col justify-between">
+              <h2 className="text-lg font-semibold mb-2 text-center text-gray-800 break-words">{resource.resourceName}</h2>
+              <p className="mb-4 text-center text-gray-600">{resource.resourceDescription}</p>
 
-            <hr className="my-4 border-b-2 border-gray-200" />
+              <hr className="my-4 border-b-2 border-gray-200" />
 
-            <div className="flex justify-between items-center px-4">
-              <div>
-                <p className="text-sm text-gray-600 text-center">Size</p>
-                <p className="text-gray-800 text-center">{resource.resourceSize}</p>
+              <div className="flex justify-around items-center px-4">
+                <div>
+                  <p className="text-sm text-gray-600 text-center">Size</p>
+                  <p className="text-gray-800 text-center">{resource.resourceSize}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 text-center">Type</p>
+                  <p className="text-gray-800 text-center">{resource.resourceType}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-600 text-center">Type</p>
-                <p className="text-gray-800 text-center">{resource.resourceType}</p>
+
+              <hr className="my-4 border-b-2 border-gray-200" />
+
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => handleDownload(resource._id, resource.resourceName)}
+                  className="text-indigo-500 hover:font-semibold"
+                >
+                  Download
+                </button>
+                <button
+                  onClick={() => window.open(resource.url, '_blank')}
+                  className="text-indigo-500 hover:font-semibold"
+                >
+                  View
+                </button>
               </div>
             </div>
-
-            <hr className="my-4 border-b-2 border-gray-200" />
-
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => handleDownload(resource._id, resource.resourceName)}
-                className="text-blue-500 hover:font-semibold mr-2"
-              >
-                Download
-              </button>
-              <button
-                onClick={() => window.open(resource.url, '_blank')}
-                className="text-blue-500 hover:font-semibold mr-2"
-              >
-                View
-              </button>
-            </div>
-          </div>
-
-        ))}
+          ))}
+        </div>
       </div>
-    </div>      
+    </div>
   );
 }
