@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import {BSON} from "realm-web";
+import { BSON } from "realm-web";
 import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const References = ({ data, onChange }) => {
-  
-  const [references, setReferences] = useState(data); 
+  const [references, setReferences] = useState(data);
 
   const handleAddReference = () => {
     setReferences([
@@ -62,7 +61,7 @@ const References = ({ data, onChange }) => {
         }
       );
     });
-  }; 
+  };
 
   const handleFileUpload = async (index, file) => {
     try {
@@ -85,7 +84,7 @@ const References = ({ data, onChange }) => {
 
   return (
     <div>
-      <h2>References</h2>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>References</div>
       <form>
         {references.map((reference, index) => (
           <div key={index} className="mb-4 p-4 border border-gray-300 rounded-md">
@@ -131,6 +130,7 @@ const References = ({ data, onChange }) => {
                   placeholder='Enter reference title'
                 />
               </div>
+
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -220,51 +220,67 @@ const References = ({ data, onChange }) => {
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Document
                 </label>
-                <input
-                  type='file'
-                  accept='application/pdf,image/*'
-                  onChange={(e) => {
-                    if (e.target.files[0]) {
-                      handleFileUpload(index, e.target.files[0]);
-                    }
-                  }}
-                />
+                {!reference.fileUrl && (
+                  <input
+                    type='file'
+                    accept='application/pdf,image/*'
+                    className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                  file:bg-violet-50 file:text-indigo-500
+                  hover:file:bg-violet-100"
+                    onChange={(e) => {
+                      if (e.target.files[0]) {
+                        handleFileUpload(index, e.target.files[0]);
+                      }
+                    }}
+                  />
+                )}
                 {reference.fileUrl && (
-                  <div className='mt-2'>
-                    <a href={reference.fileUrl} target='_blank' rel='noopener noreferrer'>
-                      View Document
-                    </a>
+                  <div className='mt-2 flex items-center'>
                     <button
                       type='button'
-                      className="ml-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                      className=" px-4 py-2 bg-red-500 text-white rounded-md"
                       onClick={() => handleFileDelete(index)}
                     >
-                      Delete Document
+                      Delete File
                     </button>
+                    <button
+                      type='button'
+                      className="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md"
+                      onClick={() => window.open(reference.fileUrl, '_blank', 'noopener,noreferrer')}
+                    >
+                      View File
+                    </button>
+
                   </div>
                 )}
               </div>
-
-
+            
             </div>
 
-            <button
-              type='button'
-              className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
-              onClick={() => handleRemoveReference(index)}
-            >
-              Remove Reference
-            </button>
+            <div className="flex justify-end pt-4">
+              <button
+                type='button'
+                className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                onClick={() => handleRemoveReference(index)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
         
-        <button
-          type='button'
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleAddReference}
-        >
-          Add Reference
-        </button>
+        <div className="flex justify-center">
+          <button
+            type='button'
+            className="mt-4 p-3 bg-blue-500 text-white rounded-md"
+            onClick={handleAddReference}
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

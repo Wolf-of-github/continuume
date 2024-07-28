@@ -58,6 +58,18 @@ export default function Header() {
                 Services
               </Link>
             </li> */}
+            
+            <li>
+              <Link
+                to="/messages"
+                className={`block py-2 px-3 md:p-0 rounded ${
+                  location.pathname === '/messages' ? 'bg-gray-200' : 'text-black'
+                } hover:bg-gray-200`}
+              >
+                Messages
+              </Link>
+            </li>
+
             {currentUser && currentUser.role === 'admin' && (
               <li>
                 <Link
@@ -73,11 +85,18 @@ export default function Header() {
             <li>
               <Link to="/profile">
                 {currentUser ? (
-                  <img
-                    className="rounded-full h-7 w-7 object-cover"
-                    src={currentUser.avatar}
-                    alt="profile"
-                  />
+                  <>
+                    {/* Hidden on mobile, shown on md and larger screens */}
+                    <img
+                      className="hidden md:block rounded-full h-7 w-7 object-cover"
+                      src={currentUser.avatar}
+                      alt="profile"
+                    />
+                    {/* Shown on mobile, hidden on md and larger screens */}
+                    <span className="block md:hidden py-2 px-3">
+                      Profile
+                    </span>
+                  </>
                 ) : (
                   <span
                     className={`block py-2 px-3 md:p-0 rounded ${
@@ -88,7 +107,7 @@ export default function Header() {
                   </span>
                 )}
               </Link>
-            </li>
+            </li>          
           </ul>
         </div>
       </div>

@@ -14,7 +14,8 @@ const PersonalDetails = ({ data, onChange }) => {
   
   return (
     <div className="" id = 'pds'>
-      <h2 >Personal Details</h2>
+    
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Personal Details</div>
 
       <form className=''>
         <div className="grid grid-cols-2 gap-4">  

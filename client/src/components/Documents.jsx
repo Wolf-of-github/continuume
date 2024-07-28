@@ -94,66 +94,93 @@ const Documents = ({ data, onChange }) => {
   };
 
   return (
-    <div className='flex flex-col space-y-4'>
-      {['resume', 'passport', 'tenthMS', 'twelfthMS', 'sop', 'personalHistory'].map((docKey) => (
-        <div className="relative z-0 w-full mb-5 group" key={docKey}>
-          {documents[docKey] ? (
-            <div>
-              <div className='py-3'>
-                <button type='button' onClick={() => handleFileDelete(docKey)} className="text-red-700 border border-red-700 rounded hover:shadow-lg p-1 mr-2">
-                  Delete
-                </button>
-                <a href={documents[docKey]} target="_blank" rel="noopener noreferrer" className="text-lime-500 border border-lime-500 rounded hover:shadow-lg p-1">
-                  View {docKey}
-                </a>
+    <div>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Documents</div>
+      
+      <div className='flex flex-col space-y-4'>
+        {['resume', 'passport', 'tenthMS', 'twelfthMS', 'sop', 'personalHistory'].map((docKey) => (
+          <div className="relative z-0 w-full mb-5 group" key={docKey}>
+            <div className='pb-2 font-semibold text-gray-700'>{docKey.charAt(0).toUpperCase() + docKey.slice(1)}</div>
+            {documents[docKey] ? (
+              <div>
+                <div className='py-3'>
+                  <button
+                    type='button'
+                    onClick={() => handleFileDelete(docKey)}
+                    className="bg-red-500 text-white rounded hover:shadow-lg p-3 mr-2"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() => window.open(documents[docKey], '_blank', 'noopener,noreferrer')}
+                    className="bg-gray-500 text-white rounded hover:shadow-lg p-3"
+                  >
+                    View {docKey}
+                  </button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div>
-              <input
-                type="file"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                accept="application/pdf"
-                onChange={(event) => handleFileUpload(event, docKey)}
-                disabled={uploading[docKey]}
-              />
-              <label
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Upload {docKey}
-              </label>
+            ) : (
+              <div>
+                <input
+                  type="file"
+                  className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                             file:mr-4 file:py-2 file:px-4
+                             file:rounded-full file:border-0
+                             file:text-sm file:font-semibold
+                             file:bg-violet-50 file:text-indigo-500
+                             hover:file:bg-violet-100"
+                  accept="application/pdf"
+                  onChange={(event) => handleFileUpload(event, docKey)}
+                  disabled={uploading[docKey]}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+
+        <div className="relative z-0 w-full mb-5 group">
+          <label className="block mb-2 text-sm font-semibold text-gray-700">Upload Bachelors Mark Sheets</label>
+          <input
+            type="file"
+            className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                       file:mr-4 file:py-2 file:px-4
+                       file:rounded-full file:border-0
+                       file:text-sm file:font-semibold
+                       file:bg-violet-50 file:text-indigo-500
+                       hover:file:bg-violet-100"
+            accept="application/pdf"
+            multiple
+            onChange={(event) => handleMultipleFileUpload(event, 'bachelorsMarkSheets')}
+            disabled={uploading['bachelorsMarkSheets']}
+          />
+          {documents.bachelorsMarkSheets && documents.bachelorsMarkSheets.length > 0 && (
+            <div className='mt-3'>
+              {documents.bachelorsMarkSheets.map((url, index) => (
+                <div key={index} className='flex items-center space-x-3 py-1'>
+                  <button
+                    type='button'
+                    onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
+                    className="bg-gray-500 text-white rounded hover:shadow-lg p-1"
+                  >
+                    View Mark Sheet {index + 1}
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() => handleMultipleFileDelete('bachelorsMarkSheets', url)}
+                    className="bg-red-500 text-white rounded hover:shadow-lg p-1"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>
-      ))}
-
-      <div className="relative z-0 w-full mb-5 group">
-        <label className="block mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">Upload Bachelors Mark Sheets</label>
-        <input
-          type="file"
-          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          accept="application/pdf"
-          multiple
-          onChange={(event) => handleMultipleFileUpload(event, 'bachelorsMarkSheets')}
-          disabled={uploading['bachelorsMarkSheets']}
-        />
-        {documents.bachelorsMarkSheets && documents.bachelorsMarkSheets.length > 0 && (
-          <div className='mt-3'>
-            {documents.bachelorsMarkSheets.map((url, index) => (
-              <div key={index} className='flex items-center space-x-3'>
-                <a href={url} target="_blank" rel="noopener noreferrer" className="text-lime-500 border border-lime-500 rounded hover:shadow-lg p-1">
-                  View Mark Sheet {index + 1}
-                </a>
-                <button type='button' onClick={() => handleMultipleFileDelete('bachelorsMarkSheets', url)} className="text-red-700 border border-red-700 rounded hover:shadow-lg p-1">
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
+
 };
 
 export default Documents;

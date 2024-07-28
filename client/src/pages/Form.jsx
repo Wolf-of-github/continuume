@@ -10,7 +10,9 @@ import Education from '../components/Education';
 import TravelAndVisa from '../components/TravelAndVisa';
 import { useSelector } from 'react-redux';
 import { selectUserIdToView } from '../redux/form/formSlice';
+import Footer from '../components/Footer';
 import Chat from '../components/Chat';
+import ButtonsSection from '../components/ButtonsSection';
 
 const Form = () => {
   
@@ -108,6 +110,9 @@ const Form = () => {
   const [formExists, setFormExists] = useState(false); 
   const [selectedForm, setSelectedForm] = useState('PersonalDetails');
   const [formDataModified, setFormDataModified] = useState(false); // Track if formData has been modified
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+
   
   useEffect(() => {
     
@@ -200,23 +205,24 @@ const Form = () => {
         break;
       case 'TravelAndVisa':
         setSelectedForm('References');
-        break;  
+        break;
       case 'References':
         setSelectedForm('WorkDetails');
         break;
       case 'WorkDetails':
-          setSelectedForm('Documents');
-          break;
+        setSelectedForm('Documents');
+        break;
       case 'Documents':
-          setSelectedForm('CourseDetails');
-          break;          
+        setSelectedForm('CourseDetails');
+        break;
       case 'CourseDetails':
-          setSelectedForm('University')
+        setSelectedForm('University');
+        break;
       default:
         break;
-    } 
+    }
   };
-
+  
   const goToPreviousSection = () => {
     switch (selectedForm) {
       case 'Education':
@@ -235,13 +241,16 @@ const Form = () => {
         setSelectedForm('WorkDetails');
         break;
       case 'CourseDetails':
-        setSelectedForm('Documents')
+        setSelectedForm('Documents');
+        break;
       case 'University':
-        setSelectedForm('CourseDetails')
+        setSelectedForm('CourseDetails');
+        break;
       default:
         break;
     }
   };
+  
 
   const renderFormSection = () => {
     switch (selectedForm) {
@@ -267,43 +276,52 @@ const Form = () => {
   };
   
   return (
+    <div className="flex flex-col min-h-screen">
+      {/* Mobile Menu Button */}
+      <div className="md:hidden bg-slate-100">
+        <button
+          className="w-full p-2 flex items-center justify-center space-x-2"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          <span>{isSidebarOpen ? 'Close Menu' : 'Open Menu'}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
+            <path d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
+          </svg>
+        </button>
+      </div>
 
-      <div className="flex h-screen">
-        <div className="flex bg-blue-200"> {/* Section 1 */}
-          <Sidebar className="" onSelect={setSelectedForm} />
+      {/* Sidebar for Mobile */}
+      {isSidebarOpen && (
+        <div className="md:hidden bg-slate-100">
+          <Sidebar isOpen={isSidebarOpen} onSelect={setSelectedForm} />
         </div>
-        
-        <div className="flex-1 grid grid-rows-10 grid-cols-4 bg-gray-800">
-          
-          <div className="row-span-9 col-span-3 overflow-auto pl-3 py-5 pr-3">
+      )}
+
+      {/* Main Content */}
+      <div className="flex flex-1 md:flex-row">
+        {/* Sidebar for Desktop */}
+        <div className="hidden md:block bg-slate-100">
+          <Sidebar isOpen={isSidebarOpen} onSelect={setSelectedForm} />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex flex-col flex-1">
+          <div className=" flex-1 p-4 overflow-auto max-h-screen">
             {renderFormSection()}
           </div>
-          
-          <div style={{ borderLeft: "0.5px solid white" }} className="row-span-10 col-span-1 bg-gray-800">
-            <Chat selectedForm={selectedForm}/>           
-          </div>
-          
-          <div className="row-span-1 col-span-3">
-            <div className="flex justify-between">
-              <div>
-                <button className={`px-4 py-2 rounded ml-3 ${selectedForm !== 'PersonalDetails' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToPreviousSection}>
-                  Back
-                </button>
-                
-                <button className={`px-4 py-2 rounded ml-3 ${selectedForm != 'Documents' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={goToNextSection}>
-                  Next
-                </button>
-              </div>
-              
-              <button className={`px-4 py-2 rounded mr-3 ${formDataModified && userIdToView === null ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`} onClick={saveFormData} disabled={!formDataModified && !userIdToView === null}>
-                Save
-              </button>
-            </div>
-          </div>
-
+          <ButtonsSection 
+            selectedForm={selectedForm}
+            goToPreviousSection={goToPreviousSection}
+            goToNextSection={goToNextSection}
+            formDataModified={formDataModified}
+            userIdToView={userIdToView}
+            saveFormData={saveFormData}
+          />
         </div>
       </div>
 
+      <Footer />
+    </div>
   );
 };
 

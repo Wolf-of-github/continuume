@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import {BSON} from "realm-web";
+import { BSON } from "realm-web";
 import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const WorkDetails = ({ data, onChange }) => {
-
-  const [workDetails, setWorkDetails] = useState(data); 
+  const [workDetails, setWorkDetails] = useState(data);
 
   const handleAddWorkDetails = () => {
     setWorkDetails([
@@ -19,11 +18,9 @@ const WorkDetails = ({ data, onChange }) => {
         startDate: '',
         endDate: '',
         jobCertificate: '',
-        },
+      },
     ]);
   };
-  
-  
 
   const handleInputChange = (index, e) => {
     const { name, value } = e.target;
@@ -61,7 +58,7 @@ const WorkDetails = ({ data, onChange }) => {
         }
       );
     });
-  }; 
+  };
 
   const handleFileUpload = async (index, file) => {
     try {
@@ -77,14 +74,14 @@ const WorkDetails = ({ data, onChange }) => {
 
   const handleFileDelete = (index) => {
     const updatedWorkDetails = [...workDetails];
-    updatedWorkDetails[index].jobCertificate = ''; 
+    updatedWorkDetails[index].jobCertificate = '';
     setWorkDetails(updatedWorkDetails);
     onChange(updatedWorkDetails);
   };
 
   return (
     <div>
-      <h2>Work Details</h2>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Work Details</div>
       <form>
         {workDetails.map((workDetail, index) => (
           <div key={index} className="mb-4 p-4 border border-gray-300 rounded-md">
@@ -119,7 +116,7 @@ const WorkDetails = ({ data, onChange }) => {
 
               <div className='col-span-1'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                Organiztion Address
+                  Organiztion Address
                 </label>
                 <input
                   type='text'
@@ -172,56 +169,65 @@ const WorkDetails = ({ data, onChange }) => {
                   placeholder='Enter job end date'
                 />
               </div>
-
               <div className='col-span-2'>
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Certification
                 </label>
-                <input
-                  type='file'
-                  accept='application/pdf,image/*'
-                  onChange={(e) => {
-                    if (e.target.files[0]) {
-                      handleFileUpload(index, e.target.files[0]);
-                    }
-                  }}
-                />
-                {workDetail.fileUrl && (
-                  <div className='mt-2'>
-                    <a href={workDetail.fileUrl} target='_blank' rel='noopener noreferrer'>
-                      View Document
-                    </a>
+                {!workDetail.jobCertificate && (
+                  <input
+                    type='file'
+                    accept='application/pdf,image/*'
+                    className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-violet-50 file:text-indigo-500
+                    hover:file:bg-violet-100"
+                    onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                  />
+                )}
+                {workDetail.jobCertificate && (
+                  <div className='mt-2 flex items-center'>
                     <button
                       type='button'
-                      className="ml-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                      className="px-4 py-2 bg-red-500 text-white rounded-md"
                       onClick={() => handleFileDelete(index)}
                     >
-                      Delete Document
+                      Delete File
+                    </button>
+                    <button
+                      type='button'
+                      className="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md"
+                      onClick={() => window.open(workDetail.jobCertificate, '_blank', 'noopener,noreferrer')}
+                    >
+                      View File
                     </button>
                   </div>
                 )}
               </div>
-
-
             </div>
 
-            <button
-              type='button'
-              className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
-              onClick={() => handleRemoveWorkDetails(index)}
-            >
-              Remove Job
-            </button>
+            <div className="flex justify-end pt-4">
+              <button
+                type='button'
+                className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                onClick={() => handleRemoveWorkDetails(index)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
         
-        <button
-          type='button'
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleAddWorkDetails}
-        >
-          Add Job
-        </button>
+        <div className="flex justify-center">
+          <button
+            type='button'
+            className="mt-4 p-3 bg-blue-500 text-white rounded-md"
+            onClick={handleAddWorkDetails}
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

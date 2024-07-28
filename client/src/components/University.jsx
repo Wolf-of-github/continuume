@@ -74,48 +74,52 @@ export default function University({ data, onChange }) {
       value: university[field] || '',
     };
   };
-
   return (
-    <div className="">
-      <h2>University Choices</h2>
-      <form>
-        <div className="form-group">
-          <label htmlFor="uniChoice1">University Choice 1</label>
-          <Select
-            name='uniChoice1'
-            options={options}
-            onInputChange={handleInputChange}
+    <div className=""> 
+      <div className='text-2xl font-semibold pb-6 text-indigo-600'>University Selection</div> 
+      <form className="space-y-6"> 
+        <div className="form-group"> 
+          <label htmlFor="uniChoice1" className="block text-gray-700 font-medium mb-2">University Choice 1</label> 
+          <Select 
+            name='uniChoice1' 
+            options={options} 
+            onInputChange={handleInputChange} 
             onChange={(option) => handleSelectChange('uniChoice1', option)}
             value={options.find(option => option.value === university.uniChoice1) || getInitialSelectValue('uniChoice1')}
             isLoading={loading}
+            className="react-select-container"
+            classNamePrefix="react-select"
           />
-        </div>
+        </div> 
         
-        <div className="form-group">
-          <label htmlFor="uniChoice2">University Choice 2</label>
-          <Select
-            name='uniChoice2'
-            options={options}
-            onInputChange={handleInputChange}
+        <div className="form-group"> 
+          <label htmlFor="uniChoice2" className="block text-gray-700 font-medium mb-2">University Choice 2</label> 
+          <Select 
+            name='uniChoice2' 
+            options={options} 
+            onInputChange={handleInputChange} 
             onChange={(option) => handleSelectChange('uniChoice2', option)}
             value={options.find(option => option.value === university.uniChoice2) || getInitialSelectValue('uniChoice2')}
             isLoading={loading}
+            className="react-select-container"
+            classNamePrefix="react-select"
           />
-        </div>
+        </div> 
         
-        <div className="form-group">
-          <label htmlFor="uniChoice3">University Choice 3</label>
-          <Select
-            name='uniChoice3'
-            options={options}
-            onInputChange={handleInputChange}
+        <div className="form-group"> 
+          <label htmlFor="uniChoice3" className="block text-gray-700 font-medium mb-2">University Choice 3</label> 
+          <Select 
+            name='uniChoice3' 
+            options={options} 
+            onInputChange={handleInputChange} 
             onChange={(option) => handleSelectChange('uniChoice3', option)}
             value={options.find(option => option.value === university.uniChoice3) || getInitialSelectValue('uniChoice3')}
             isLoading={loading}
+            className="react-select-container"
+            classNamePrefix="react-select"
           />
-        </div>
-
-      </form>
-    </div>
+        </div> 
+      </form> 
+    </div> 
   );
 }

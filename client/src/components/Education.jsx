@@ -23,7 +23,7 @@ const Education = ({ data, onChange }) => {
 
   return (
     <div>
-      <h2>Education</h2>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Education</div>
       <form>
         <div className="grid grid-cols-2 gap-4">
         

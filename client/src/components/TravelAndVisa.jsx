@@ -11,7 +11,8 @@ const TravelAndVisa = ({ data, onChange }) => {
 
   return (
     <div>
-      <h2>Travel & Visa</h2>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Travel & Visa</div>
+      
       <form>
             <div className='grid grid-cols-2 gap-4'>
               <div className='col-span-1'>

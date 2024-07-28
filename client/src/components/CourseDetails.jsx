@@ -28,10 +28,10 @@ const CourseDetails = ({ data, onChange }) => {
 
   return (
     <div>
-      <h2>Course Details</h2>
+      <div className='text-xl font-medium pb-4 text-indigo-500'>Course Details</div>
       <form>
         <div className='grid grid-cols-2 gap-4'>
-          <div className='col-span-1'>
+          <div className='col-span-2'>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               After what educational level are you flying
             </label>
