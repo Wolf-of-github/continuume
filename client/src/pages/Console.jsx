@@ -35,43 +35,44 @@ export default function Console() {
   ];
 
   return (
-    <div>
-    <div className="container px-5 py-6 mx-auto">
-      <div className="flex flex-wrap -m-4">
-        {options.map((option, index) => (
-          <div className="p-4 md:w-1/3" key={index}>
-            <div className="flex rounded-lg h-full bg-white p-8 flex-col shadow-md hover:shadow-lg transition-shadow duration-200">
-              <div className="flex items-center mb-3">
-                <div className="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
-                  {option.icon}
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow container px-5 py-6 mx-auto">
+        <div className="flex flex-wrap -m-4">
+          {options.map((option, index) => (
+            <div className="p-4 md:w-1/3" key={index}>
+              <div className="flex rounded-lg h-full bg-gray-200 p-8 flex-col shadow-md hover:shadow-lg transition-shadow duration-200">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
+                    {option.icon}
+                  </div>
+                  <h2 className="text-gray-900 text-lg title-font font-medium">{option.label}</h2>
                 </div>
-                <h2 className="text-gray-900 text-lg title-font font-medium">{option.label}</h2>
-              </div>
-              <div className="flex-grow">
-                <button
-                  className="mt-3 text-indigo-500 inline-flex items-center"
-                  onClick={() => navigate(option.path)}
-                >
-                  View
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 ml-2"
-                    viewBox="0 0 24 24"
+                <div className="flex-grow">
+                  <button
+                    className="mt-3 text-indigo-500 inline-flex items-center"
+                    onClick={() => navigate(option.path)}
                   >
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
-                  </svg>
-                </button>
+                    View
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="w-4 h-4 ml-2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
+  
 }
