@@ -71,7 +71,7 @@ const ResourceEdit = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                <tr className="bg-indigo-500 text-left text-xs font-semibold uppercase tracking-widest text-white">
                   <th className="px-5 py-3">Name</th>
                   <th className="px-5 py-3">Downloads</th>
                   <th className="px-5 py-3">Description</th>
@@ -97,13 +97,13 @@ const ResourceEdit = () => {
                     </td>
 
                     <td className = "border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <a href={resource.url}   target="_blank" rel="noopener noreferrer" className="rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white">
+                      <a href={resource.url}   target="_blank" rel="noopener noreferrer" className="rounded-full bg-green-200 px-3 py-1 text-xs font-semibold text-green-900">
                         View
                       </a>
                     </td>
                     
                     <td className = "border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <button className="rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white" onClick={()=>deleteResource(resource._id)}>
+                      <button className="rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white hover:bg-red-900" onClick={()=>deleteResource(resource._id)}>
                         Delete
                       </button>
                     </td>

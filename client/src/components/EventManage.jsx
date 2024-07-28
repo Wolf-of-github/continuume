@@ -75,7 +75,7 @@ const EventManage = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                <tr className="bg-indigo-500 text-left text-xs font-semibold uppercase tracking-widest text-white">
                   <th className="px-5 py-3">Event Name</th>
                   <th className="px-5 py-3">Event Date</th>
                   <th className="px-5 py-3">Event Time</th>
@@ -110,7 +110,7 @@ const EventManage = () => {
 
                     <td className = "border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       
-                      <button className="rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white" onClick={()=>deleteEvent(event._id)}>
+                      <button className="rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white hover:bg-red-900" onClick={()=>deleteEvent(event._id)}>
                         Delete
                       </button>
                     </td>
