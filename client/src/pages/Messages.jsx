@@ -52,11 +52,11 @@ export default function Messages() {
                 <button key={user._id} className="p-3 w-full flex flex-col rounded-md dark:bg-gray-200 shadow">
                   <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
                     <img src={user.avatar} className="w-7 h-7 mr-2 rounded-full" alt="profile picture" />
-                    {user.username}
+                    {user.fullname}
                   </div>
                   <div className="flex items-center w-full">
                     <div className="text-xs py-1 px-2 leading-none bg-indigo-500 text-white rounded-md">{user.role}</div>
-                    <div className="ml-auto text-xs text-gray-500">{user.role === 'admin' ? 'Admin' : 'External'}</div>
+                    <div className="ml-auto text-xs text-gray-500">{user.username}</div>
                   </div>
                 </button>
               ))}

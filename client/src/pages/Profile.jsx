@@ -192,6 +192,14 @@ export default function Profile() {
             </p>
             <input
               type='text'
+              placeholder='Name'
+              defaultValue={currentUser.fullname}
+              id='fullname'
+              className='border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+              onChange={handleChange}
+            />
+            <input
+              type='text'
               placeholder='Username'
               defaultValue={currentUser.username}
               id='username'

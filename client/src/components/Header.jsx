@@ -59,17 +59,19 @@ export default function Header() {
                 Services
               </Link>
             </li> */}
-            
+            {currentUser && (
             <li>
-              <Link
-                to="/messages"
-                className={`block py-2 px-3 md:p-0 rounded ${
-                  location.pathname === '/messages' ? 'bg-gray-200' : 'text-black'
-                } hover:bg-gray-200`}
-              >
-                Messages
-              </Link>
+              
+                  <Link
+                  to="/messages"
+                  className={`block py-2 px-3 md:p-0 rounded ${
+                    location.pathname === '/messages' ? 'bg-gray-200' : 'text-black'
+                  } hover:bg-gray-200`}
+                >
+                  Messages
+                </Link>
             </li>
+            )}
 
             {currentUser && currentUser.role === 'admin' && (
               <li>
