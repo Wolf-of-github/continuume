@@ -17,6 +17,7 @@ import UserManagement from './pages/UserManagement';
 import ResourceManagement from './pages/ResourceManagement';
 import EventsManagement from './pages/EventsManagement';
 import Announcement from './pages/Announcement';
+import Messages from './pages/Messages';
 
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
               <Route path='/events' element={<Events />} />
               <Route path='/resource' element={<Resource />} />
               <Route path='/announcement' element={<Announcement />} />
+              <Route path='/messages' element={<Messages />} />
             </Route>
             <Route element={<AdminPrivateRoute />}>
               <Route path='/console' element={<Console />} />

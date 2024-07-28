@@ -215,7 +215,7 @@ export default function Profile() {
             />
             <button
               disabled={loading}
-              className='text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br rounded-lg p-3 uppercase'
+              className='text-white bg-indigo-500 rounded-lg p-3 uppercase'
             >
               {loading ? 'Loading...' : 'Update'}
             </button>
