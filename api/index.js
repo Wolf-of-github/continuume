@@ -9,6 +9,7 @@ import resourceRouter from './routes/resource.route.js'
 import eventsRouter from './routes/events.route.js';
 import universityRoutes from './routes/university.route.js'
 import cookieParser from 'cookie-parser';
+import messageRouter from './routes/message.route.js'
 import logger from '../logger.js';
 
 dotenv.config();
@@ -44,7 +45,7 @@ app.use('/api/chat', chatRouter)
 app.use('/api/resource', resourceRouter)
 app.use('/api/events', eventsRouter)
 app.use('/api/universities', universityRoutes);
-
+app.use('/api/message',messageRouter)
 
 
 app.use((err, req, res, next) =>{
