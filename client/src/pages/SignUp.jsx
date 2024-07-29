@@ -5,7 +5,6 @@ import Toast from '../components/Toast';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState([]);
   const navigate = useNavigate();
@@ -31,6 +30,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
+      
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -38,23 +38,20 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
+      const data = await res.json();      
       
       if (data.success === false) {
         setLoading(false);
-        setError(data.message);
-        showToast('error', data.message); // Show error toast
+        showToast('error', data.message); 
         return;
       }
       setLoading(false);
-      setError(null);
       navigate('/email-verification-call-out');
       
 
     } catch (error) {
       setLoading(false);
-      setError(error.message);
-      showToast('error', error.message);
+      showToast('error', "Programming error");
     }
   };
   return (
@@ -104,7 +101,16 @@ export default function SignUp() {
           <span className='text-blue-700'>Sign in</span>
         </Link>
       </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
+
+      {toasts.map((toast) => (
+            <Toast
+              key={toast.id}
+              id={toast.id}
+              type={toast.type}
+              message={toast.message}
+              onClose={removeToast}
+            />
+          ))}
     </div>
   );
 }

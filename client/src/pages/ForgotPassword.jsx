@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
+import Toast from '../components/Toast'; // Adjust the path as needed
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [toasts, setToasts] = useState([]);
+  const [passwordSent, setPasswordSent] = useState(false)
+
+  // Function to show toast
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  // Function to remove toast
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     setLoading(true);
     try {
@@ -16,16 +30,17 @@ const ForgotPassword = () => {
         },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
+      const result = await res.json();
       setLoading(false);
       if (res.ok) {
-        setMessage('A password reset link has been sent to your email address.');
+        showToast('success', 'A password reset link has been sent to your email address.');
+        setPasswordSent(true)
       } else {
-        setMessage(data.error || 'Failed to send reset link.');
+        showToast('error', result.message || 'Failed to send reset link.');
       }
     } catch (error) {
       setLoading(false);
-      setMessage('Failed to send reset link.');
+      showToast('error', 'Failed to send reset link.');
     }
   };
 
@@ -56,12 +71,20 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 className="mt-3 items-center bg-indigo-500 text-white p-3 rounded-lg uppercase hover:opacity-95"
-                disabled={loading}
+                disabled={loading || passwordSent }
               >
-                {loading ? 'Loading...' : 'Send Reset Link'}
+                {loading ? 'Loading...' : passwordSent ? 'Sent': 'Send Reset Link'}
               </button>
             </form>
-            {message && <p className="mt-5">{message}</p>}
+            {toasts.map((toast) => (
+              <Toast
+                key={toast.id}
+                id={toast.id}
+                type={toast.type}
+                message={toast.message}
+                onClose={removeToast}
+              />
+            ))}
           </div>
         </div>
       </div>

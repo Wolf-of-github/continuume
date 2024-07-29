@@ -54,7 +54,7 @@ export default function SignIn() {
       navigate('/');
     } catch (error) {
       dispatch(signInFailure(error.message));
-      showToast('error', error.message); // Show error toast
+      showToast('error', "Programming error"); // Show error toast
     }
   };
   return (

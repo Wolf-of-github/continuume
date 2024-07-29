@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Toast from '../components/Toast';
 
 const VerifyEmail = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [message, setMessage] = useState('');
+  const [toasts, setToasts] = useState([]);
+
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -17,16 +27,16 @@ const VerifyEmail = () => {
           const result = await response.json();
 
           if (response.ok) {
-            setMessage('Email verified successfully!');
+            showToast('success', 'Email verified successfully!');
             navigate('/sign-in'); // Redirect to sign-in page on success
           } else {
-            setMessage(result.error || 'Verification failed. Please try again.');
+            showToast('error', result.message || 'Verification failed. Please try again.');
           }
         } catch (error) {
-          setMessage('Verification failed. Please try again.');
+          showToast('error', 'Verification failed. Please try again.');
         }
       } else {
-        setMessage('No token provided.');
+        showToast('error', 'No token provided.');
       }
     };
 
@@ -35,8 +45,16 @@ const VerifyEmail = () => {
 
   return (
     <div>
-      <h1>Email Verification</h1>
-      <p>{message}</p>
+      <h1 className='text-red-500'>Email Verification Done/Failed</h1>
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          id={toast.id}
+          type={toast.type}
+          message={toast.message}
+          onClose={removeToast}
+        />
+      ))}
     </div>
   );
 };

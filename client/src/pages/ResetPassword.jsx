@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Toast from '../components/Toast'; // Adjust the path as needed
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [toasts, setToasts] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const token = new URLSearchParams(location.search).get('token');
+
+  // Function to show toast
+  const showToast = (type, message) => {
+    const id = Math.floor(Math.random() * 10000);
+    setToasts([...toasts, { id, type, message }]);
+  };
+
+  // Function to remove toast
+  const removeToast = (id) => {
+    setToasts(toasts.filter((toast) => toast.id !== id));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,13 +33,16 @@ export default function ResetPassword() {
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage('Password reset successfully!');
-        navigate('/sign-in');
+        showToast('success', 'Password reset successfully!');
+        // Delay navigation to allow toast to be displayed
+        setTimeout(() => {
+          navigate('/sign-in');
+        }, 3000); // Adjust time to match your toast display duration
       } else {
-        setMessage(data.error || 'Failed to reset password.');
+        showToast('error', data.error || 'Failed to reset password.');
       }
     } catch (error) {
-      setMessage('An error occurred. Please try again.');
+      showToast('error', 'An error occurred. Please try again.');
     }
   };
 
@@ -49,7 +64,15 @@ export default function ResetPassword() {
           Reset Password
         </button>
       </form>
-      {message && <p className='mt-5'>{message}</p>}
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          id={toast.id}
+          type={toast.type}
+          message={toast.message}
+          onClose={removeToast}
+        />
+      ))}
     </div>
   );
 }
