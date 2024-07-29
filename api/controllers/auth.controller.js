@@ -2,7 +2,9 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
-import sendVerificationEmail from '../utils/sendVerificationEmail.js'; 
+import sendVerificationEmail from '../utils/sendVerificationEmail.js';
+import sendForgotPasswordEmail from '../utils/sendForgotPasswordEmail.js';
+
 
 
 export const signup = async (req, res, next) => {
@@ -10,18 +12,52 @@ export const signup = async (req, res, next) => {
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newUser = new User({fullname, username, email, password: hashedPassword });
   try {
+    
     await newUser.save();
+    
     //generate verification token
-
     const verificationToken = jwt.sign({ id: newUser._id, email: newUser.email }, 
       process.env.JWT_SECRET, { expiresIn: '1h' });
     const verificationLink = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}`;
     await sendVerificationEmail(newUser.email, verificationLink);
 
-
     res.status(201).json('User created successfully!');
   } catch (error) {
     next(error);
+  }
+};
+
+export const forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found!' });
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    
+    await sendForgotPasswordEmail(resetLink, email)
+
+    res.status(200).json({ success: true, message: 'Email sent successfully!' });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  const { token, password } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+
+    await User.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+    res.status(200).json({ success: true, message: 'Password reset successfully!' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: 'Invalid or expired token.' });
   }
 };
 
@@ -122,3 +158,4 @@ export const verify = async (req, res, next) => {
     next(error);
   }
 };
+

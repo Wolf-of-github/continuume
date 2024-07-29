@@ -32,9 +32,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['YES', 'NO'],
         default: 'NO' 
-    },
-    verificationToken: {
-        type: String,
     }
 }, { timestamps: true });
 

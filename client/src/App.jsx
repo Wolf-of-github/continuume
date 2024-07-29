@@ -20,7 +20,8 @@ import Announcement from './pages/Announcement';
 import Messages from './pages/Messages';
 import VerifyEmail from './pages/VerifyEmail';
 import CheckEmail from './pages/CheckEmail';
-
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
   return (
@@ -36,6 +37,8 @@ export default function App() {
             <Route path='/services' element={<Services />} />
             <Route path='/verify' element={<VerifyEmail />} />
             <Route path = '/email-verification-call-out' element={<CheckEmail/>}/>
+            <Route path = '/forgot-password' element={<ForgotPassword/>}/>
+            <Route path = '/reset-password' element={<ResetPassword/>}/>
             {/* PrivateRoute wrapper for protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path='/form' element={<Form />} />
